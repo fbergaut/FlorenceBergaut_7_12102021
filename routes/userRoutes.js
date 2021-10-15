@@ -17,5 +17,10 @@ const sequelize = new Sequelize("groupomania", "root", "root", {
 })();
 
 
+// Synchronisation Sequelize
+const UserModel = require("../models/userModel");
+const UserModelInstance = UserModel(sequelize);
+sequelize.sync({ alter: true });
+
 
 module.exports = router;
