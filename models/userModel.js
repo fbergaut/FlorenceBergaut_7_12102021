@@ -38,13 +38,13 @@ const UserModel = (sequelize) => {
                 type: DataTypes.STRING(800),
             },
             followers: {
-                type: DataTypes.INTEGER
+                type: DataTypes.STRING,
             },
             following: {
-                type: DataTypes.INTEGER
+                type: DataTypes.STRING,
             },
             likes: {
-                type: DataTypes.INTEGER
+                type: DataTypes.STRING,
             }
         }, { sequelize, freezeTableName: true }
     );
