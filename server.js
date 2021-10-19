@@ -13,19 +13,19 @@ app.post('/users', async(req, res) => {
     try {
         const user = await User.create({ firstname, lastname, username, email, password })
         return res.json(user)
-    } catch(err) {
+    } catch (err) {
         console.log(err)
         return res.status(500).json({ message: err })
     }
 });
 
 // Connexion server + Sequelize
-app.listen(process.env.PORT, async () => {
+app.listen(process.env.PORT, async() => {
     try {
         console.log(`Listening on port ${process.env.PORT}`),
-        await sequelize.sync({ force: true });
-        console.log("Connection has been established successfully.");
+            await sequelize.authenticate();
+        console.log("Database connected !");
     } catch (error) {
         console.error("Unable to connect to the database:", error);
-    } 
+    }
 });
