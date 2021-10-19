@@ -6,50 +6,50 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: DataTypes.INTEGER
             },
             firstname: {
-                type: Sequelize.STRING,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             lastname: {
-                type: Sequelize.STRING,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             username: {
-                type: Sequelize.STRING,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             email: {
-                type: Sequelize.STRING,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             password: {
-                type: Sequelize.STRING,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             picture: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             bio: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             followers: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             following: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             likes: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: DataTypes.DATE
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: DataTypes.DATE
             }
         });
     },
