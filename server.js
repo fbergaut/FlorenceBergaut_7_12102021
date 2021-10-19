@@ -19,6 +19,16 @@ app.post('/users', async(req, res) => {
     }
 });
 
+app.get('/users', async(req, res) => {
+    try {
+        const users = await User.findAll()
+        return res.json(users)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Something went wrong !' })
+    }
+});
+
 // Connexion server + Sequelize
 app.listen(process.env.PORT, async() => {
     try {
