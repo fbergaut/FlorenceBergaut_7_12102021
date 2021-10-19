@@ -29,6 +29,19 @@ app.get('/users', async(req, res) => {
     }
 });
 
+app.get('/users/:id', async(req, res) => {
+    const id = req.params.id
+    try {
+        const user = await User.findOne({
+            where: { id }
+        })
+        return res.json(user)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Something went wrong !' })
+    }
+});
+
 // Connexion server + Sequelize
 app.listen(process.env.PORT, async() => {
     try {
