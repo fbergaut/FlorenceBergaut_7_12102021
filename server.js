@@ -8,6 +8,8 @@ const { sequelize, User, Post } = require("./models");
 //---------------------- Middleware général : Transforme corps de la requête en obj JS utilisable
 app.use(bodyParser.json());
 
+
+// end point pour le model User
 app.post('/users', async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
     try {
@@ -39,6 +41,23 @@ app.get('/users/:id', async(req, res) => {
     } catch (err) {
         console.log(err)
         return res.status(500).json({ message: 'Something went wrong !' })
+    }
+});
+
+// end point pour le model Post
+app.post('/posts', async(req, res) => {
+    const { userUuid, message } = req.body
+    try {
+        const user = await User.findOne({
+            where: { uuid: userUuid }
+        })
+        const post = await Post.create({ message, userId: user.id })
+        return res.json(post)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+            message: 'Post was not post!'
+        })
     }
 });
 
