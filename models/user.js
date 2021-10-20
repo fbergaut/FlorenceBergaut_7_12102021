@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate({ Post }) {
             // define association here
-            this.hasMany(Post, { foreignKey: 'usreId' })
+            this.hasMany(Post, { foreignKey: 'userId', as: 'posts' })
         }
 
         // fonction qui permet de cacher l'id en retour au user

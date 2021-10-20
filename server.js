@@ -31,11 +31,12 @@ app.get('/users', async(req, res) => {
     }
 });
 
-app.get('/users/:id', async(req, res) => {
-    const uuid = req.params.id
+app.get('/users/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
     try {
         const user = await User.findOne({
-            where: { uuid }
+            where: { uuid },
+            include: [{ model: Post, as: 'posts' }]
         })
         return res.json(user)
     } catch (err) {
@@ -56,7 +57,19 @@ app.post('/posts', async(req, res) => {
     } catch (err) {
         console.log(err)
         return res.status(500).json({
-            message: 'Post was not post!'
+            message: 'Post was not post !'
+        })
+    }
+});
+
+app.get('/posts', async(req, res) => {
+    try {
+        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
+        return res.json(posts)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+            message: 'Something went wrong !'
         })
     }
 });
