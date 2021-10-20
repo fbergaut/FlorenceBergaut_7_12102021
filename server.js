@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config({ path: './config/.env' });
 const app = express();
-const { sequelize, User, Post } = require("./models");
+const { sequelize, User, Post, Comment } = require("./models");
 
 
 //---------------------- Middleware général : Transforme corps de la requête en obj JS utilisable
