@@ -45,6 +45,43 @@ app.get('/users/:uuid', async(req, res) => {
     }
 });
 
+app.put('/users/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
+    const { firstname, lastname, username, email, password } = req.body
+    try {
+        const user = await User.findOne({
+            where: { uuid }
+        })
+
+        user.firstname = firstname
+        user.lastname = lastname
+        user.username = username
+        user.email = email
+        user.password = password
+
+        await user.save()
+
+        return res.json(user)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(user)
+    }
+});
+
+app.delete('/users/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
+    try {
+        const user = await User.findOne({
+            where: { uuid }
+        })
+        await user.destroy()
+        return res.json({ message: 'User deleted !' })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Something went wrong !' })
+    }
+});
+
 // end point pour le model Post
 app.post('/posts', async(req, res) => {
     const { userUuid, message } = req.body
