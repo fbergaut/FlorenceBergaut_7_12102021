@@ -125,6 +125,39 @@ app.get('/posts/:uuid', async(req, res) => {
     }
 });
 
+app.put('/posts/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
+    const { message } = req.body
+    try {
+        const post = await Post.findOne({
+            where: { uuid }
+        })
+
+        post.message = message
+
+        await post.save()
+
+        return res.json(post)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(post)
+    }
+});
+
+app.delete('/posts/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
+    try {
+        const post = await Post.findOne({
+            where: { uuid }
+        })
+        await post.destroy()
+        return res.json({ message: 'Post deleted !' })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Something went wrong !' })
+    }
+});
+
 // Connexion server + Sequelize
 app.listen(process.env.PORT, async() => {
     try {
