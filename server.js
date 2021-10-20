@@ -111,6 +111,20 @@ app.get('/posts', async(req, res) => {
     }
 });
 
+app.get('/posts/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
+    try {
+        const post = await Post.findOne({
+            where: { uuid },
+            include: [{ model: User, as: 'user' }]
+        })
+        return res.json(post)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Something went wrong !' })
+    }
+});
+
 // Connexion server + Sequelize
 app.listen(process.env.PORT, async() => {
     try {
