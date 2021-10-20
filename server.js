@@ -17,7 +17,7 @@ app.post('/users', async(req, res) => {
         return res.json(user)
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ message: 'User not registered !' })
+        return res.status(500).json({ err })
     }
 });
 
