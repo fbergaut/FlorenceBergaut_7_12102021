@@ -15,7 +15,7 @@ app.post('/users', async(req, res) => {
         return res.json(user)
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ message: err })
+        return res.status(500).json({ message: 'User not registered !' })
     }
 });
 
@@ -30,10 +30,10 @@ app.get('/users', async(req, res) => {
 });
 
 app.get('/users/:id', async(req, res) => {
-    const id = req.params.id
+    const uuid = req.params.id
     try {
         const user = await User.findOne({
-            where: { id }
+            where: { uuid }
         })
         return res.json(user)
     } catch (err) {
