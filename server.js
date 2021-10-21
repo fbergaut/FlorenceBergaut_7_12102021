@@ -1,5 +1,6 @@
 const http = require("http");
 const app = require("./app");
+const { Sequelize } = require("sequelize");
 
 const { sequelize } = require("./models");
 

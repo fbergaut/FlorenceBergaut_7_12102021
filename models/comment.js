@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             this.belongsTo(Post, { foreignKey: 'postId', as: 'post' });
         }
         toJSON() {
-            return {...this.get(), id: undefined, userId: undefined }
+            return {...this.get(), id: undefined, userId: undefined, postId: undefined }
         }
     };
     Comment.init({

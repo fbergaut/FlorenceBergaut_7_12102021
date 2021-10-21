@@ -1,22 +1,25 @@
-const { User, Post } = require('../models')
+const { User, Post, Comment } = require('../models')
 
-exports.createPost = async(req, res) => {
-    const { userUuid, message } = req.body
+exports.createComment = async(req, res) => {
+    const { userUuid, postUuid, text } = req.body
     try {
         const user = await User.findOne({
             where: { uuid: userUuid }
         })
-        const post = await Post.create({ message, userId: user.id })
-        return res.json(post)
+        const post = await Post.findOne({
+            where: { uuid: postUuid }
+        })
+        const comment = await Comment.create({ text, userId: user.id, postId: post.id })
+        return res.json(comment)
     } catch (err) {
         console.log(err)
         return res.status(500).json({
-            message: 'Post was not post !'
+            message: 'Comment was not post !'
         })
     }
 };
 
-exports.getAllPosts = async(req, res) => {
+exports.getAllComments = async(req, res) => {
     try {
         const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
         return res.json(posts)
@@ -28,7 +31,7 @@ exports.getAllPosts = async(req, res) => {
     }
 };
 
-exports.getOnePost = async(req, res) => {
+exports.getOneComment = async(req, res) => {
     const uuid = req.params.uuid
     try {
         const post = await Post.findOne({
@@ -41,7 +44,7 @@ exports.getOnePost = async(req, res) => {
         return res.status(500).json({ message: 'Something went wrong !' })
     }
 };
-exports.modifyPost = async(req, res) => {
+exports.modifyComment = async(req, res) => {
     const uuid = req.params.uuid
     const { message } = req.body
     try {
@@ -60,7 +63,7 @@ exports.modifyPost = async(req, res) => {
     }
 };
 
-exports.deletePost = async(req, res) => {
+exports.deleteComment = async(req, res) => {
     const uuid = req.params.uuid
     try {
         const post = await Post.findOne({
