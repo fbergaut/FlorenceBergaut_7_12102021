@@ -1,165 +1,59 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-require('dotenv').config({ path: './config/.env' });
-const app = express();
-const { sequelize, User, Post, Comment } = require("./models");
+const http = require("http");
+const app = require("./app");
 
+const { sequelize } = require("./models");
 
-//---------------------- Middleware général : Transforme corps de la requête en obj JS utilisable
-app.use(bodyParser.json());
+//------------------------------- normalizePort : renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
+const normalizePort = (val) => {
+    const port = parseInt(val, 10);
 
-
-// end point pour le model User
-app.post('/users', async(req, res) => {
-    const { firstname, lastname, username, email, password } = req.body
-    try {
-        const user = await User.create({ firstname, lastname, username, email, password })
-        return res.json(user)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ err })
+    if (isNaN(port)) {
+        return val;
     }
+    if (port >= 0) {
+        return port;
+    }
+    return false;
+};
+const port = normalizePort(process.env.PORT);
+//------------------------------- On dit à l'App Express sur quel port elle va tourner
+app.set("port", port);
+
+//------------------------------- errorHandler : recherche les différentes erreurs et les gère de manière appropriée
+const errorHandler = (error) => {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+    const address = server.address();
+    const bind =
+        typeof address === "string" ? "pipe " + address : "port: " + port;
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges.");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use.");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+};
+
+//------------------------------- Création du server auquel on passe en argument app
+const server = http.createServer(app);
+
+//------------------------------- écouteur d'évènements est également enregistré, consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console
+server.on("error", errorHandler);
+server.on("listening", () => {
+    const address = server.address();
+    const bind = typeof address === "string" ? "pipe " + address : "port " + port;
+    console.log("Listening on " + bind);
 });
 
-app.get('/users', async(req, res) => {
-    try {
-        const users = await User.findAll()
-        return res.json(users)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ message: 'Something went wrong !' })
-    }
-});
-
-app.get('/users/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const user = await User.findOne({
-            where: { uuid },
-            include: [{ model: Post, as: 'posts' }]
-        })
-        return res.json(user)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ message: 'Something went wrong !' })
-    }
-});
-
-app.put('/users/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    const { firstname, lastname, username, email, password } = req.body
-    try {
-        const user = await User.findOne({
-            where: { uuid }
-        })
-
-        user.firstname = firstname
-        user.lastname = lastname
-        user.username = username
-        user.email = email
-        user.password = password
-
-        await user.save()
-
-        return res.json(user)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json(user)
-    }
-});
-
-app.delete('/users/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const user = await User.findOne({
-            where: { uuid }
-        })
-        await user.destroy()
-        return res.json({ message: 'User deleted !' })
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ message: 'Something went wrong !' })
-    }
-});
-
-// end point pour le model Post
-app.post('/posts', async(req, res) => {
-    const { userUuid, message } = req.body
-    try {
-        const user = await User.findOne({
-            where: { uuid: userUuid }
-        })
-        const post = await Post.create({ message, userId: user.id })
-        return res.json(post)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({
-            message: 'Post was not post !'
-        })
-    }
-});
-
-app.get('/posts', async(req, res) => {
-    try {
-        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
-        return res.json(posts)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({
-            message: 'Something went wrong !'
-        })
-    }
-});
-
-app.get('/posts/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const post = await Post.findOne({
-            where: { uuid },
-            include: [{ model: User, as: 'user' }]
-        })
-        return res.json(post)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ message: 'Something went wrong !' })
-    }
-});
-
-app.put('/posts/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    const { message } = req.body
-    try {
-        const post = await Post.findOne({
-            where: { uuid }
-        })
-
-        post.message = message
-
-        await post.save()
-
-        return res.json(post)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json(post)
-    }
-});
-
-app.delete('/posts/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const post = await Post.findOne({
-            where: { uuid }
-        })
-        await post.destroy()
-        return res.json({ message: 'Post deleted !' })
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ message: 'Something went wrong !' })
-    }
-});
-
-// Connexion server + Sequelize
-app.listen(process.env.PORT, async() => {
+//---------------------- Connexion server + Sequelize
+server.listen(process.env.PORT, async() => {
     try {
         console.log(`Listening on port ${process.env.PORT}`),
             await sequelize.authenticate();
