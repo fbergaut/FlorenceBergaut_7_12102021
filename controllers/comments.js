@@ -21,8 +21,10 @@ exports.createComment = async(req, res) => {
 
 exports.getAllComments = async(req, res) => {
     try {
-        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
-        return res.json(posts)
+        const comments = await Comment.findAll({
+            include: [{ model: User, as: 'user' }, { model: Post, as: 'post' }]
+        })
+        return res.json(comments)
     } catch (err) {
         console.log(err)
         return res.status(500).json({
@@ -34,11 +36,11 @@ exports.getAllComments = async(req, res) => {
 exports.getOneComment = async(req, res) => {
     const uuid = req.params.uuid
     try {
-        const post = await Post.findOne({
+        const comment = await Comment.findOne({
             where: { uuid },
-            include: [{ model: User, as: 'user' }]
+            include: [{ model: User, as: 'user' }, { model: Post, as: 'post' }]
         })
-        return res.json(post)
+        return res.json(comment)
     } catch (err) {
         console.log(err)
         return res.status(500).json({ message: 'Something went wrong !' })
@@ -46,31 +48,31 @@ exports.getOneComment = async(req, res) => {
 };
 exports.modifyComment = async(req, res) => {
     const uuid = req.params.uuid
-    const { message } = req.body
+    const { text } = req.body
     try {
-        const post = await Post.findOne({
+        const comment = await Comment.findOne({
             where: { uuid }
         })
 
-        post.message = message
+        comment.text = text
 
-        await post.save()
+        await comment.save()
 
-        return res.json(post)
+        return res.json(comment)
     } catch (err) {
         console.log(err)
-        return res.status(500).json(post)
+        return res.status(500).json(comment)
     }
 };
 
 exports.deleteComment = async(req, res) => {
     const uuid = req.params.uuid
     try {
-        const post = await Post.findOne({
+        const comment = await Comment.findOne({
             where: { uuid }
         })
-        await post.destroy()
-        return res.json({ message: 'Post deleted !' })
+        await comment.destroy()
+        return res.json({ message: 'Comment deleted !' })
     } catch (err) {
         console.log(err)
         return res.status(500).json({ message: 'Something went wrong !' })
