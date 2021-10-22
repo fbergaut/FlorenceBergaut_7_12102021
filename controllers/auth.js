@@ -35,7 +35,6 @@ exports.signIn = async(req, res) => {
     } catch (err) {
         const errors = signInErrors(err)
         return res.status(500).send({ errors })
-            // return res.status(500).json({ message: 'Something went wrong !' })
     }
 };
 
