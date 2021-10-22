@@ -2,8 +2,9 @@ const { User } = require('../models')
 const jwt = require("jsonwebtoken");
 const { signUpErrors, signInErrors } = require("../utils/errors")
 
-// const maxAge = 3 * 24 * 60 * 60 * 1000;
+
 //--------------------- Creation du token d'authentification
+const maxAge = 3 * 24 * 60 * 60 * 1000;
 const createToken = (uuid) => {
     return jwt.sign({ uuid }, process.env.TOKEN_SECRET, {
         expiresIn: maxAge
@@ -25,13 +26,14 @@ exports.signUp = async(req, res) => {
 exports.signIn = async(req, res) => {
     const { email, password } = req.body
     try {
-        const user = await User.login(email, password)
+        const user = await User.login({ email, password })
         const token = createToken(user.uuid)
         res.cookie('jwt', token, { httpOnly: true, maxAge })
         return res.status(200).json(user)
     } catch (err) {
-        const errors = signInErrors(err)
-        return res.status(500).send({ errors })
+        // const errors = signInErrors(err)
+        // return res.status(500).send({ errors })
+        return res.status(500).json({ message: 'Something went wrong !' })
     }
 };
 

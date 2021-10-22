@@ -1,4 +1,6 @@
 'use strict';
+const { isEmail } = require('validator')
+
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
@@ -51,9 +53,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a email' },
-                notEmpty: { msg: 'Email must not be empty' },
-                isEmail: { msg: 'Must be a valid email adress' }
+                isEmail
+                // notNull: { msg: 'User must have a email' },
+                // notEmpty: { msg: 'Email must not be empty' },
+                // isEmail: { msg: 'Must be a valid email adress' }
             }
         },
         password: {

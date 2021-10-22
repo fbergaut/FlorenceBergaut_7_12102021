@@ -1,4 +1,4 @@
-module.exports.signUpErrors = (err) => {
+exports.signUpErrors = (err) => {
     let errors = { username: "", email: "", password: "" };
 
     if (err.message.includes("username"))
@@ -18,7 +18,7 @@ module.exports.signUpErrors = (err) => {
     return errors;
 };
 
-module.exports.signInErrors = (err) => {
+exports.signInErrors = (err) => {
     let errors = { email: '', password: '' }
 
     if (err.message.includes("email"))
