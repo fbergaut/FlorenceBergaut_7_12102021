@@ -26,14 +26,16 @@ exports.signUp = async(req, res) => {
 exports.signIn = async(req, res) => {
     const { email, password } = req.body
     try {
-        const user = await User.login({ email, password })
+        const user = await User.findOne({
+            where: { email: email }
+        })
         const token = createToken(user.uuid)
         res.cookie('jwt', token, { httpOnly: true, maxAge })
         return res.status(200).json(user)
     } catch (err) {
-        // const errors = signInErrors(err)
-        // return res.status(500).send({ errors })
-        return res.status(500).json({ message: 'Something went wrong !' })
+        const errors = signInErrors(err)
+        return res.status(500).send({ errors })
+            // return res.status(500).json({ message: 'Something went wrong !' })
     }
 };
 
