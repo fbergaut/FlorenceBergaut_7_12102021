@@ -1,5 +1,4 @@
 'use strict';
-// const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
 
 const { Model } = require('sequelize');
@@ -54,11 +53,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                // isEmail,
                 isEmail: { msg: 'Must be a valid email adress' },
                 notNull: { msg: 'User must have a email' },
                 notEmpty: { msg: 'Email must not be empty' },
-            }
+            },
+            unique: true
         },
         password: {
             type: DataTypes.STRING,

@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const helmet = require("helmet");
 
 require('dotenv').config({ path: './config/.env' });
 
-//---------------------- Création de l'application Express
 const app = express();
+
+app.use(helmet());
 
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/users')
