@@ -1,7 +1,6 @@
 const { User } = require('../models')
 const jwt = require("jsonwebtoken");
-const { signUpErrors, signInErrors } = require("../utils/errors")
-
+const Sequelize = require('sequelize');
 
 //--------------------- Creation du token d'authentification
 const maxAge = 3 * 24 * 60 * 60 * 1000;
@@ -14,13 +13,22 @@ const createToken = (uuid) => {
 exports.signUp = async(req, res) => {
     console.log(req.body)
     const { firstname, lastname, username, email, password } = req.body
-    try {
-        const user = await User.create({ firstname, lastname, username, email, password })
-        return res.status(201).json(user)
-    } catch (err) {
-        const errors = signUpErrors(err)
-        return res.status(200).send({ errors })
-    }
+    User.findOne({
+            where: {
+                email: email
+            }
+        })
+        .then(user => {
+            if (user) { res.status(200).json({ errorMessage: 'Cet utilisateur existe déjà !' }) } else {
+                try {
+                    const user = User.Create({ firstname, lastname, username, email, password })
+                    return res.status(201).json(user)
+                } catch (err) {
+                    console.log(err)
+                    return res.status(500).json({ err })
+                }
+            }
+        })
 };
 
 exports.signIn = async(req, res) => {
@@ -33,8 +41,8 @@ exports.signIn = async(req, res) => {
         res.cookie('jwt', token, { httpOnly: true, maxAge })
         return res.status(200).json(user)
     } catch (err) {
-        const errors = signInErrors(err)
-        return res.status(500).send({ errors })
+        console.log(err)
+        return res.status(500).json({ err })
     }
 };
 
