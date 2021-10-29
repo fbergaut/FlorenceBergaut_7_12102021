@@ -1,4 +1,6 @@
 'use strict';
+const bcrypt = require('bcrypt')
+
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
@@ -51,10 +53,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
+                isEmail: { msg: 'Must be a valid email adress' },
                 notNull: { msg: 'User must have a email' },
                 notEmpty: { msg: 'Email must not be empty' },
-                isEmail: { msg: 'Must be a valid email adress' }
-            }
+            },
+            unique: true
         },
         password: {
             type: DataTypes.STRING,
@@ -81,6 +84,25 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         }
     }, {
+        hooks: {
+            beforeCreate: async(user) => {
+                if (user.password) {
+                    const salt = await bcrypt.genSaltSync(10, 'a');
+                    user.password = bcrypt.hashSync(user.password, salt);
+                }
+            },
+            beforeUpdate: async(user) => {
+                if (user.password) {
+                    const salt = await bcrypt.genSaltSync(10, 'a');
+                    user.password = bcrypt.hashSync(user.password, salt);
+                }
+            }
+        },
+        instanceMethods: {
+            validPassword: (password) => {
+                return bcrypt.compareSync(password, this.password);
+            }
+        },
         sequelize,
         tableName: 'users',
         modelName: 'User',
