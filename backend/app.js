@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const helmet = require("helmet");
 
 require('dotenv').config({ path: './config/.env' });
@@ -13,10 +14,20 @@ const userRoutes = require('./routes/users')
 const postRoutes = require('./routes/posts')
 const commentRoutes = require('./routes/comments')
 
-//---------------------- Middleware général : Transforme corps de la requête en obj JS utilisable
+const corsOptions = {
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    'allowedHeaders': ['Content-Type', 'Authorization'],
+    'exposedHeaders': ['Content-Range', 'X-Content-Range'],
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false,
+    "optionsSuccessStatus": 204
+}
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 
-//---------------------- Middleware général : Utilise les routes définies dans le fichier routes/users.js et routes/posts.js
+//---------------------- routes
 app.use('/users', authRoutes)
 app.use('/users', userRoutes)
 app.use('/posts', postRoutes)
