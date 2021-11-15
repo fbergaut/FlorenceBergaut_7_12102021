@@ -3,14 +3,17 @@ const { User } = require('../models');
 
 exports.checkUser = (req, res, next) => {
     const token = req.cookies.jwt;
+    console.log(token);
     if (token) {
         jwt.verify(token, process.env.TOKEN_SECRET, async(err, decodedToken) => {
             if (err) {
                 res.locals.user = null;
-                // res.cookie("jwt", "", { maxAge: 1 });
+                res.cookie("jwt", "", { maxAge: 1 });
                 next();
             } else {
-                let user = await User.findById(decodedToken.id);
+                const user = await User.findOne({
+                    where: { uuid: decodedToken.uuid }
+                });
                 res.locals.user = user;
                 next();
             }
@@ -29,11 +32,11 @@ exports.requireAuth = (req, res, next) => {
                 console.log(err);
                 res.send(200).json('no token')
             } else {
-                console.log(decodedToken.id);
+                console.log(decodedToken.uuid);
                 next();
             }
         });
     } else {
-        console.log('No token');
+        console.log('Pas de token !');
     }
 };

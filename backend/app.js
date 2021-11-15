@@ -31,10 +31,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.get('/', function(req, res) {
+    // Cookies that have not been signed
+    console.log('Cookies: ', req.cookies)
+
+    // Cookies that have been signed
+    console.log('Signed Cookies: ', req.signedCookies)
+})
+
 //---------------------- jwt
 app.get('*', checkUser);
 app.get('/jwtid', requireAuth, (req, res) => {
-    res.status(200).send(res.locals.user._id)
+    console.log(res.locals.user);
+    res.status(200).json(res.locals.user.id)
 });
 
 //---------------------- routes
