@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 const cors = require('cors');
 const helmet = require("helmet");
+const { checkUser, requireAuth } = require('./middleware/authMiddleware');
 
 require('dotenv').config({ path: './config/.env' });
 
@@ -26,6 +28,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+//---------------------- jwt
+app.get('*', checkUser);
+app.get('/jwtid', requireAuth, (req, res) => {
+    console.log(res.locals.user);
+    res.status(200).json(res.locals.user.uuid)
+});
 
 //---------------------- routes
 app.use('/users', authRoutes)
