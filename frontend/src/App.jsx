@@ -20,9 +20,9 @@ const App = () => {
       })
       .catch((err) => console.log("Aucun token trouvé !"));
     }
-    
+
     fetchToken();
-  }, []);
+  }, [uid]);
 
   return (
     <UidContext.Provider value={uid}>
