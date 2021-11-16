@@ -10,7 +10,46 @@ const SignUpForm = () => {
     const [controlPassword, setControlPassword] = useState('');
 
     const handleRegister = async (e) => {
+        e.preventDefault();
+        const terms = document.getElementById("terms");
+        const userNameError = document.querySelector(".userName.error");
+        const emailError = document.querySelector(".email.error");
+        const passwordError = document.querySelector(".password.error");
+        const passwordConfirmError = document.querySelector(".password-confirm.error");
+        const termsError = document.querySelector(".terms.error");
 
+        passwordConfirmError.innerHTML="";
+        termsError.innerHTML="";
+
+        if(password !== controlPassword || !terms.checked) {
+            if (password !== controlPassword)
+                passwordConfirmError.innerHTML="Les mots de passe ne correspondent pas";
+
+            if(!terms.checked)
+                termsError.innerHTML="Veuillez valider les conditions générales";
+        } else {
+            await axios({
+                method: "post",
+                url: `${process.env.REACT_APP_API_URL}/users/register`,
+                data: {
+                    userName,
+                    email,
+                    password,
+                }
+            })
+            .then((res) => {
+                console.log(res);
+                if (res.data.errors) {
+                emailError.innerHTML = res.data.errors.email;
+                passwordError.innerHTML = res.data.errors.password;
+                } else {
+                window.location = "/";
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     }
 
     return (
@@ -23,7 +62,7 @@ const SignUpForm = () => {
                 id="userName" 
                 onChange={(e) => setUserName(e.target.value)} value={userName}
             />
-            <div className="pseudo error"></div>
+            <div className="userName error"></div>
             <br/>
             <label htmlFor="firstName">Prénom</label>
             <br/>

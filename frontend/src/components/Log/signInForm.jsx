@@ -17,7 +17,7 @@ const SignInForm = () => {
       data: {
         email,
         password,
-      },
+      }
     })
       .then((res) => {
         console.log(res);

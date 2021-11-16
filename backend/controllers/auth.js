@@ -2,6 +2,8 @@ const { User } = require('../models');
 const jwt = require("jsonwebtoken");
 const Sequelize = require('sequelize');
 const passwordValidator = require("password-validator");
+const bcrypt = require('bcrypt');
+const Op = Sequelize.Op;
 
 const schema = new passwordValidator();
 schema
@@ -48,17 +50,55 @@ exports.signUp = async(req, res) => {
 
 exports.signIn = async(req, res) => {
     const { email, password } = req.body
-    try {
-        const user = await User.findOne({
-            where: { email: email }
+    User.findOne({
+            where: {
+                email: {
+                    [Op.eq]: email
+                }
+            }
         })
-        const token = createToken(user.uuid)
-        res.cookie('jwt', token, { httpOnly: true, maxAge })
-        return res.status(200).json(user)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ err })
-    }
+        .then(user => {
+            if (user) {
+                if (bcrypt.compareSync(password, user.password)) {
+                    const token = createToken(user.uuid)
+                    res.cookie('jwt', token, { httpOnly: true, maxAge })
+                    res.status(200).send({ message: "Vous êtes connecté !" })
+                } else {
+                    res.status(200).send({
+                        errorMessage: "Mot de passe incorrect"
+                    })
+                }
+            } else {
+                res.status(200).send({
+                    errorMessage: "Email incorrect"
+                })
+            }
+        })
+
+    // try {
+    //     const user = await User.findOne({
+    //         where: {
+    //             email: email
+    //         }
+    //     })
+
+    // console.log(email);
+    // if (email !== user.email) {
+
+    //     return res.sendStatus(400).json({ errors: "Email incorrect" })
+    // }
+
+    // if (password !== user.password) {
+    //     return res.sendStatus(400).json({ errors: "Password incorrect" })
+    // }
+
+    //     const token = createToken(user.uuid)
+    //     res.cookie('jwt', token, { httpOnly: true, maxAge })
+    //     return res.status(200).json(user)
+    // } catch (err) {
+    //     console.log(err)
+    //     return res.status(500).json({ err: "Il y a une erreur" })
+    // }
 };
 
 exports.logOut = (req, res) => {
