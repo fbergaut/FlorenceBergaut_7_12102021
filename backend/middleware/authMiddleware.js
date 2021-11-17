@@ -24,20 +24,20 @@ exports.checkUser = (req, res, next) => {
     }
 };
 
-exports.requireAuth = (req, res, next) => {
-    const token = req.cookies.jwt;
-    if (token) {
-        jwt.verify(token, process.env.TOKEN_SECRET, async(err, decodedToken) => {
-            if (err) {
-                console.log(err);
-                res.send(200).json('Token non conforme !')
-            } else {
-                console.log(decodedToken.uuid);
-                next();
-            }
-        });
-    } else {
-        console.log('Pas de token !');
-        res.sendStatus(400).json({ message: "Veuillez vous autentifier" })
-    }
-};
+// exports.requireAuth = (req, res, next) => {
+//     const token = req.cookies.jwt;
+//     if (token) {
+//         jwt.verify(token, process.env.TOKEN_SECRET, async(err, decodedToken) => {
+//             if (err) {
+//                 console.log(err);
+//                 res.send(200).json('Token non conforme !')
+//             } else {
+//                 console.log(decodedToken.uuid);
+//                 next();
+//             }
+//         });
+//     } else {
+//         console.log('Pas de token !');
+//         res.sendStatus(400).json({ message: "Veuillez vous autentifier" })
+//     }
+// };

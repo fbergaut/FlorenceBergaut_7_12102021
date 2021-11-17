@@ -65,12 +65,12 @@ exports.signIn = async(req, res) => {
                     res.status(200).send({ message: "Vous êtes connecté !" })
                 } else {
                     res.status(200).send({
-                        errorMessage: "Mot de passe incorrect"
+                        errors: { errorPassword: "Mot de passe incorrect" }
                     })
                 }
             } else {
                 res.status(200).send({
-                    errorMessage: "Email incorrect"
+                    errors: { errorEmail: "Email incorrect" }
                 })
             }
         })

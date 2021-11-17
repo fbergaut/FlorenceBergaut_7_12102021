@@ -20,10 +20,13 @@ const SignInForm = () => {
       }
     })
       .then((res) => {
-        console.log(res);
-        if (res.data.errors) {
-          emailError.innerHTML = res.data.errors.email;
-          passwordError.innerHTML = res.data.errors.password;
+        console.log(res.data);
+        if (res.data.errors.errorEmail) {
+          emailError.innerHTML = res.data.errors.errorEmail;
+          passwordError.innerHTML = "";
+        } else if (res.data.errors.errorPassword) {
+          emailError.innerHTML = "";
+          passwordError.innerHTML = res.data.errors.errorPassword;
         } else {
           window.location = "/";
         }
@@ -33,6 +36,27 @@ const SignInForm = () => {
       });
   };
 
+  // const validation = () => {
+  //   const form = document.getElementById("sign-up-form");
+  //   const email = document.getElementById("email");
+  //   const emailText = document.querySelector(".email.error");
+  //   const pattern = new RegExp("^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$", "g");
+
+  //   if (pattern.test(email.value)) {
+  //     form.classList.add("valid");
+  //     form.classList.remove("invalid");
+  //     emailText.innerHTML = "Votre email est correct";
+  //     emailText.style.color = "#00ff00";
+  //     return true;
+  //   } else {
+  //     form.classList.remove("valid");
+  //     form.classList.add("invalid");
+  //     emailText.innerHTML = "Veuillez écrire une adresse email correcte";
+  //     emailText.style.color = "#ff0000";
+  //     return false;
+  //   }
+  // }
+
   return (
     <form action="" onSubmit={handleLogin} id="sign-up-form">
       <label htmlFor="email">Email</label>
@@ -41,6 +65,7 @@ const SignInForm = () => {
         type="text"
         name="email"
         id="email"
+        // onKeyDown={() => validation()}
         onChange={(e) => setEmail(e.target.value)}
         value={email}
       />
