@@ -13,6 +13,7 @@ const SignUpForm = () => {
         e.preventDefault();
         const terms = document.getElementById("terms");
         
+        const userExistError = document.querySelector(".userExist.error");
         const firstNameError = document.querySelector(".firstName.error");
         const lastNameError = document.querySelector(".lastName.error");
         const userNameError = document.querySelector(".userName.error");
@@ -51,6 +52,13 @@ const SignUpForm = () => {
                     userNameError.innerHTML = "";
                     emailError.innerHTML = "";
                     passwordError.innerHTML = res.data.errors.errorPassword;
+                } else if (res.data.errors && res.data.errors.errorMessage) {
+                    userExistError.innerHTML = res.data.errors.errorMessage;
+                    firstNameError.innerHTML = "";
+                    lastNameError.innerHTML = "";
+                    userNameError.innerHTML = "";
+                    emailError.innerHTML = "";
+                    passwordError.innerHTML = "";
                 } else if (res.data.errors) {
                     firstNameError.innerHTML = res.data.errors.firstName;
                     lastNameError.innerHTML = res.data.errors.lastName;
@@ -67,6 +75,8 @@ const SignUpForm = () => {
 
     return (
         <form action="" onSubmit={handleRegister} id="sign-up-form">
+            <div className="userExist error"></div>
+            <br/>
             <label htmlFor="firstName">Prénom</label>
             <br/>
             <input 

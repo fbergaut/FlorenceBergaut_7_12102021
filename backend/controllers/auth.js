@@ -59,61 +59,6 @@ exports.signUp = async(req, res) => {
     };
 };
 
-// User.findOne({
-//         where: {
-//             email: email
-//         }
-//     })
-//     .then(user => {
-//             if (user) {
-//                 res.status(200).send({
-//                     errors: { errorMessage: 'Cet utilisateur existe déjà !' }
-//                 })
-//             } else {
-
-//                 const user = User.create({ firstname, lastname, username, email, password });
-// if (err === 'SequelizeValidationError') {
-//     return res.status(400).json({
-//         success: false,
-//         msg: err.errors.map(e => e.message)
-//     })
-// } else {
-//     return res.status(201).send(user)
-// };
-
-//         const dataUser = [];
-//         dataUser.push(firstname, lastname, username);
-//         console.log(dataUser);
-//         dataUser.forEach(err => {
-//             const errors = [];
-//             if (!firstname) {
-
-//                 res.status(200).send({
-//                     errorFirstname: "Veuillez indiquer votre prénom"
-//                 })
-//                 errors.push(err.errorFirstname)
-//             };
-
-//             if (!lastname) {
-//                 res.status(200).send({
-//                     errorLastname: "Veuillez indiquer votre nom"
-//                 })
-//                 errors.push(err.errorLastname)
-//             };
-
-//             if (!username) {
-//                 return res.status(200).send({
-//                     errors: {
-//                         errorUsername: "Veuillez indiquer votre pseudo"
-//                     }
-//                 })
-//             };
-//             return res.status(200).send({ errors })
-//         });
-//         return res.status(201).send({ dataUser })
-//     }
-// })
-
 exports.signIn = async(req, res) => {
     const { email, password } = req.body
     User.findOne({
