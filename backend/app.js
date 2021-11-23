@@ -32,11 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //---------------------- jwt
-// app.get('*', checkUser);
-// app.get('/jwtid', requireAuth, (req, res) => {
-//     console.log(res.locals.user);
-//     res.status(200).json(res.locals.user.uuid)
-// });
+app.get('*', checkUser);
+app.get('/jwtid', requireAuth, (req, res) => {
+    console.log(res.locals.user);
+    res.status(200).json(res.locals.user.uuid)
+});
 
 //---------------------- routes
 app.use('/users', authRoutes)

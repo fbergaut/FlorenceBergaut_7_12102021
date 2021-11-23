@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const passwordValidator = require("password-validator");
 const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
-const { signUpErrors, signInErrors } = require('../utils/errorsUtils');
+const { signUpErrors } = require('../utils/errorsUtils');
 
 const schema = new passwordValidator();
 schema

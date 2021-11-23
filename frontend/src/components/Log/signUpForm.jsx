@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import SignInForm from "./SignInForm";
 
 const SignUpForm = () => {
+    const [formSubmit, setFormSubmit] = useState(false);
     const [firstname, setFirstName] = useState('');
     const [lastname, setLastName] = useState('');
     const [username, setUserName] = useState('');
@@ -67,13 +69,21 @@ const SignUpForm = () => {
                     passwordError.innerHTML = "";
                 }
                 else {
-                window.location = "/";
+                    setFormSubmit(true);
                 }
             })
         }
     }
 
     return (
+        <>
+        {formSubmit ? (
+            <>
+            <SignInForm />
+            <span></span>
+            <h4 className="success">Enregistrement réussi, veuillez-vous connecter !</h4>
+            </>
+        ) : ( 
         <form action="" onSubmit={handleRegister} id="sign-up-form">
             <div className="userExist error"></div>
             <br/>
@@ -143,6 +153,8 @@ const SignUpForm = () => {
             <br/>
             <input type="submit" value="Valider inscription" />
         </form>
+        )}
+        </>
     );
 };
 
