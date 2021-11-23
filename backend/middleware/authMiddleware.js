@@ -30,7 +30,7 @@ exports.requireAuth = (req, res, next) => {
         jwt.verify(token, process.env.TOKEN_SECRET, async(err, decodedToken) => {
             if (err) {
                 console.log(err);
-                res.send(200).json('no token')
+                res.send(200).json('Token non conforme !')
             } else {
                 console.log(decodedToken.uuid);
                 next();
@@ -38,5 +38,6 @@ exports.requireAuth = (req, res, next) => {
         });
     } else {
         console.log('Pas de token !');
+        res.sendStatus(400).json({ message: "Veuillez vous autentifier" })
     }
 };

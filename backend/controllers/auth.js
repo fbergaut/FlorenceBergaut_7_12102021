@@ -2,6 +2,9 @@ const { User } = require('../models');
 const jwt = require("jsonwebtoken");
 const Sequelize = require('sequelize');
 const passwordValidator = require("password-validator");
+const bcrypt = require('bcrypt');
+const Op = Sequelize.Op;
+const { signUpErrors } = require('../utils/errorsUtils');
 
 const schema = new passwordValidator();
 schema
@@ -21,44 +24,67 @@ const createToken = (uuid) => {
     })
 };
 
+
 exports.signUp = async(req, res) => {
-    console.log(req.body)
     const { firstname, lastname, username, email, password } = req.body
+
     if (schema.validate(req.body.password) === true) {
+
         User.findOne({
                 where: {
                     email: email
                 }
             })
             .then(user => {
-                if (user) { res.status(200).json({ errorMessage: 'Cet utilisateur existe déjà !' }) } else {
-                    try {
-                        const user = User.create({ firstname, lastname, username, email, password })
-                        return res.status(201).json({ message: "Utilisateur créé !" })
-                    } catch (err) {
-                        console.log(err)
-                        return res.status(500).json({ err })
-                    }
+                if (user) {
+                    res.status(200).send({
+                        errors: { errorMessage: 'Cet utilisateur existe déjà !' }
+                    })
                 }
+            });
+
+        try {
+            const user = await User.create({ firstname, lastname, username, email, password })
+            return res.status(201).json({ message: "Utilisateur créé !" })
+        } catch (err) {
+            const errors = signUpErrors(err)
+            return res.status(200).send({
+                errors
             })
+        }
     } else {
-        return res.status(401).json({ errorMessage: "Votre mot de passe doit contenir au moins 8 charactères, au moins une majuscule, au moins 2 chiffres et ne pas comporter d'espace !" });
-    }
+        return res.status(200).send({
+            errors: { errorPassword: "Votre mot de passe doit contenir : - au moins 8 charactères - au moins une majuscule - au moins 2 chiffres - aucun espace" }
+        });
+    };
 };
 
 exports.signIn = async(req, res) => {
     const { email, password } = req.body
-    try {
-        const user = await User.findOne({
-            where: { email: email }
+    User.findOne({
+            where: {
+                email: {
+                    [Op.eq]: email
+                }
+            }
         })
-        const token = createToken(user.uuid)
-        res.cookie('jwt', token, { httpOnly: true, maxAge })
-        return res.status(200).json(user)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ err })
-    }
+        .then(user => {
+            if (user) {
+                if (bcrypt.compareSync(password, user.password)) {
+                    const token = createToken(user.uuid)
+                    res.cookie('jwt', token, { httpOnly: true, maxAge })
+                    res.status(200).send({ message: "Vous êtes connecté !" })
+                } else {
+                    res.status(200).send({
+                        errors: { errorPassword: "Mot de passe incorrect" }
+                    })
+                }
+            } else {
+                res.status(200).send({
+                    errors: { errorEmail: "Email incorrect" }
+                })
+            }
+        })
 };
 
 exports.logOut = (req, res) => {

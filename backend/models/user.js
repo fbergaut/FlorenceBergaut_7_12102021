@@ -29,33 +29,33 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a firstname' },
-                notEmpty: { msg: 'Firstame must not be empty' }
+                notNull: { msg: 'Veuillez renseigner votre prénom' },
+                notEmpty: { msg: 'Veuillez renseigner votre prénom' }
             }
         },
         lastname: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a lastname' },
-                notEmpty: { msg: 'Lastname must not be empty' }
+                notNull: { msg: 'Veuillez renseigner votre nom de famille' },
+                notEmpty: { msg: 'Veuillez renseigner votre nom de famille' }
             }
         },
         username: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a username' },
-                notEmpty: { msg: 'Username must not be empty' }
+                notNull: { msg: 'Veuillez choisir un pseudo' },
+                notEmpty: { msg: 'Veuillez choisir un pseudo' }
             }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isEmail: { msg: 'Must be a valid email adress' },
-                notNull: { msg: 'User must have a email' },
-                notEmpty: { msg: 'Email must not be empty' },
+                isEmail: { msg: 'Email incorrect' },
+                notNull: { msg: 'Veuillez renseigner votre email' },
+                notEmpty: { msg: 'Veuillez renseigner votre email' },
             },
             unique: true
         },
@@ -63,8 +63,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a password' },
-                notEmpty: { msg: 'Password must not be empty' }
+                notNull: { msg: 'Veuillez renseigner votre mot de passe' },
+                notEmpty: { msg: 'Veuillez renseigner votre mot de passe' }
             }
         },
         picture: {
@@ -98,14 +98,19 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
-        instanceMethods: {
-            validPassword: (password) => {
-                return bcrypt.compareSync(password, this.password);
-            }
-        },
+        // validate: {
+        //     userExist(req, res){
+        //         if (this.email === req.body.email) {
+        //             throw new Error("Cet utilisateur existe déjà !")
+        //         } else {
+        //             console.log("Veuillez vous inscrire !");
+        //         }
+        //     }
+        // },
         sequelize,
         tableName: 'users',
         modelName: 'User',
     });
+
     return User;
 };
