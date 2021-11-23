@@ -21,10 +21,10 @@ const SignInForm = () => {
     })
       .then((res) => {
         console.log(res.data);
-        if (res.data.errors.errorEmail) {
+        if (res.data.errors && res.data.errors.errorEmail) {
           emailError.innerHTML = res.data.errors.errorEmail;
           passwordError.innerHTML = "";
-        } else if (res.data.errors.errorPassword) {
+        } else if (res.data.errors && res.data.errors.errorPassword) {
           emailError.innerHTML = "";
           passwordError.innerHTML = res.data.errors.errorPassword;
         } else {

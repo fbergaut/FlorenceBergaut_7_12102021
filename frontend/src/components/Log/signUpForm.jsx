@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const SignUpForm = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [userName, setUserName] = useState('');
+    const [firstname, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
+    const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [controlPassword, setControlPassword] = useState('');
@@ -12,6 +12,9 @@ const SignUpForm = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         const terms = document.getElementById("terms");
+        
+        const firstNameError = document.querySelector(".firstName.error");
+        const lastNameError = document.querySelector(".lastName.error");
         const userNameError = document.querySelector(".userName.error");
         const emailError = document.querySelector(".email.error");
         const passwordError = document.querySelector(".password.error");
@@ -32,45 +35,45 @@ const SignUpForm = () => {
                 method: "post",
                 url: `${process.env.REACT_APP_API_URL}/users/register`,
                 data: {
-                    userName,
+                    firstname,
+                    lastname,
+                    username,
                     email,
-                    password,
+                    password
                 }
             })
             .then((res) => {
-                console.log(res);
-                if (res.data.errors) {
-                emailError.innerHTML = res.data.errors.email;
-                passwordError.innerHTML = res.data.errors.password;
-                } else {
+                console.log(res.data.errors);
+                console.log(res.data);
+                if (res.data.errors && res.data.errors.errorPassword) {
+                    firstNameError.innerHTML = "";
+                    lastNameError.innerHTML = "";
+                    userNameError.innerHTML = "";
+                    emailError.innerHTML = "";
+                    passwordError.innerHTML = res.data.errors.errorPassword;
+                } else if (res.data.errors) {
+                    firstNameError.innerHTML = res.data.errors.firstName;
+                    lastNameError.innerHTML = res.data.errors.lastName;
+                    userNameError.innerHTML = res.data.errors.userName;
+                    emailError.innerHTML = res.data.errors.email;
+                    passwordError.innerHTML = "";
+                }
+                else {
                 window.location = "/";
                 }
             })
-            .catch((err) => {
-                console.log(err);
-            });
         }
     }
 
     return (
         <form action="" onSubmit={handleRegister} id="sign-up-form">
-            <label htmlFor="userName">Nom d'utilisateur</label>
-            <br/>
-            <input 
-                type="text" 
-                name="userName" 
-                id="userName" 
-                onChange={(e) => setUserName(e.target.value)} value={userName}
-            />
-            <div className="userName error"></div>
-            <br/>
             <label htmlFor="firstName">Prénom</label>
             <br/>
             <input 
                 type="text" 
                 name="firstName" 
                 id="firstName" 
-                onChange={(e) => setFirstName(e.target.value)} value={firstName}
+                onChange={(e) => setFirstName(e.target.value)} value={firstname}
             />
             <div className="firstName error"></div>
             <br/>
@@ -80,9 +83,19 @@ const SignUpForm = () => {
                 type="text" 
                 name="lastName" 
                 id="lastName" 
-                onChange={(e) => setLastName(e.target.value)} value={lastName}
+                onChange={(e) => setLastName(e.target.value)} value={lastname}
             />
             <div className="lastName error"></div>
+            <br/>
+            <label htmlFor="userName">Nom d'utilisateur</label>
+            <br/>
+            <input 
+                type="text" 
+                name="userName" 
+                id="userName" 
+                onChange={(e) => setUserName(e.target.value)} value={username}
+            />
+            <div className="userName error"></div>
             <br/>
             <label htmlFor="email">Email</label>
             <br/>

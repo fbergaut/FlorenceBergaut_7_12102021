@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const passwordValidator = require("password-validator");
 const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
+const { signUpErrors, signInErrors } = require('../utils/errorsUtils');
 
 const schema = new passwordValidator();
 schema
@@ -23,30 +24,95 @@ const createToken = (uuid) => {
     })
 };
 
+
 exports.signUp = async(req, res) => {
-    console.log(req.body)
     const { firstname, lastname, username, email, password } = req.body
+
     if (schema.validate(req.body.password) === true) {
+
         User.findOne({
                 where: {
                     email: email
                 }
             })
             .then(user => {
-                if (user) { res.status(200).json({ errorMessage: 'Cet utilisateur existe déjà !' }) } else {
-                    try {
-                        const user = User.create({ firstname, lastname, username, email, password })
-                        return res.status(201).json({ message: "Utilisateur créé !" })
-                    } catch (err) {
-                        console.log(err)
-                        return res.status(500).json({ err })
-                    }
+                if (user) {
+                    res.status(200).send({
+                        errors: { errorMessage: 'Cet utilisateur existe déjà !' }
+                    })
                 }
+            });
+
+        try {
+            const user = await User.create({ firstname, lastname, username, email, password })
+            return res.status(201).json({ message: "Utilisateur créé !" })
+        } catch (err) {
+            const errors = signUpErrors(err)
+            return res.status(200).send({
+                errors
             })
+        }
     } else {
-        return res.status(401).json({ errorMessage: "Votre mot de passe doit contenir au moins 8 charactères, au moins une majuscule, au moins 2 chiffres et ne pas comporter d'espace !" });
-    }
+        return res.status(200).send({
+            errors: { errorPassword: "Votre mot de passe doit contenir : - au moins 8 charactères - au moins une majuscule - au moins 2 chiffres - aucun espace" }
+        });
+    };
 };
+
+// User.findOne({
+//         where: {
+//             email: email
+//         }
+//     })
+//     .then(user => {
+//             if (user) {
+//                 res.status(200).send({
+//                     errors: { errorMessage: 'Cet utilisateur existe déjà !' }
+//                 })
+//             } else {
+
+//                 const user = User.create({ firstname, lastname, username, email, password });
+// if (err === 'SequelizeValidationError') {
+//     return res.status(400).json({
+//         success: false,
+//         msg: err.errors.map(e => e.message)
+//     })
+// } else {
+//     return res.status(201).send(user)
+// };
+
+//         const dataUser = [];
+//         dataUser.push(firstname, lastname, username);
+//         console.log(dataUser);
+//         dataUser.forEach(err => {
+//             const errors = [];
+//             if (!firstname) {
+
+//                 res.status(200).send({
+//                     errorFirstname: "Veuillez indiquer votre prénom"
+//                 })
+//                 errors.push(err.errorFirstname)
+//             };
+
+//             if (!lastname) {
+//                 res.status(200).send({
+//                     errorLastname: "Veuillez indiquer votre nom"
+//                 })
+//                 errors.push(err.errorLastname)
+//             };
+
+//             if (!username) {
+//                 return res.status(200).send({
+//                     errors: {
+//                         errorUsername: "Veuillez indiquer votre pseudo"
+//                     }
+//                 })
+//             };
+//             return res.status(200).send({ errors })
+//         });
+//         return res.status(201).send({ dataUser })
+//     }
+// })
 
 exports.signIn = async(req, res) => {
     const { email, password } = req.body
@@ -74,31 +140,6 @@ exports.signIn = async(req, res) => {
                 })
             }
         })
-
-    // try {
-    //     const user = await User.findOne({
-    //         where: {
-    //             email: email
-    //         }
-    //     })
-
-    // console.log(email);
-    // if (email !== user.email) {
-
-    //     return res.sendStatus(400).json({ errors: "Email incorrect" })
-    // }
-
-    // if (password !== user.password) {
-    //     return res.sendStatus(400).json({ errors: "Password incorrect" })
-    // }
-
-    //     const token = createToken(user.uuid)
-    //     res.cookie('jwt', token, { httpOnly: true, maxAge })
-    //     return res.status(200).json(user)
-    // } catch (err) {
-    //     console.log(err)
-    //     return res.status(500).json({ err: "Il y a une erreur" })
-    // }
 };
 
 exports.logOut = (req, res) => {
