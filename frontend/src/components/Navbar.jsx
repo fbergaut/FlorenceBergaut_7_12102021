@@ -6,6 +6,8 @@ import LogOut from "./Log/LogOut";
 const Navbar = () => {
     const uid = useContext(UidContext);
 
+    
+
     return (
        <nav>
            <div className="nav-container">
