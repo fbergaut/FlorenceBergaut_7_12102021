@@ -13,7 +13,7 @@ const UpdateProfil = () => {
             <div className="update-container">
                 <div className="left-part">
                     <h3>Photo de profil</h3>
-                    <img src={userData.picture} alt="user-picture" />
+                    <img src={userData.picture} alt="user" />
                     <UploadImg />
                     {/* <p>{errors.maxSize}</p>
                     <p>{errors.format}</p> */}
