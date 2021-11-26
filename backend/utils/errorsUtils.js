@@ -1,4 +1,4 @@
-module.exports.signUpErrors = (err) => {
+exports.signUpErrors = (err) => {
     let errors = {
         firstName: "",
         lastName: "",
@@ -22,7 +22,7 @@ module.exports.signUpErrors = (err) => {
     return errors;
 };
 
-module.exports.signInErrors = (err) => {
+exports.signInErrors = (err) => {
     let errors = { email: '', password: '' }
 
     if (err.message.includes("email"))
@@ -34,7 +34,7 @@ module.exports.signInErrors = (err) => {
     return errors;
 }
 
-module.exports.uploadErrors = (err) => {
+exports.uploadErrors = (err) => {
     let errors = { format: '', maxSize: "" };
 
     if (err.message.includes('invalid file'))

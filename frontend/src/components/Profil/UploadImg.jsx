@@ -10,7 +10,7 @@ const UploadImg = () => {
     const handlePicture = (e) => {
         e.preventDefault();
         const data = new FormData();
-        data.append("name", userData.username);
+        data.append("name", userData.email);
         data.append("userId",userData.uuid);
         data.append("file", file);
 

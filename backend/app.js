@@ -13,6 +13,7 @@ app.use(helmet());
 
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/users')
+const uploadRoutes = require('./routes/upload')
 const postRoutes = require('./routes/posts')
 const commentRoutes = require('./routes/comments')
 
@@ -41,6 +42,7 @@ app.get('/jwtid', requireAuth, (req, res) => {
 //---------------------- routes
 app.use('/users', authRoutes)
 app.use('/users', userRoutes)
+app.use('/users', uploadRoutes)
 app.use('/posts', postRoutes)
 app.use('/comments', commentRoutes)
 
