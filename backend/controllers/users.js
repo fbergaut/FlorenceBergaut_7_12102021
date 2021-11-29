@@ -37,24 +37,20 @@ exports.getOneUser = async(req, res) => {
 
 exports.modifyUser = async(req, res) => {
     const uuid = req.params.uuid
-    const { firstname, lastname, username, email, password } = req.body
+    const { bio } = req.body
     try {
         const user = await User.findOne({
             where: { uuid }
         })
 
-        user.firstname = firstname
-        user.lastname = lastname
-        user.username = username
-        user.email = email
-        user.password = password
+        user.bio = bio
 
         await user.save()
 
         return res.json(user)
     } catch (err) {
         console.log(err)
-        return res.status(500).json(user)
+        return res.status(500).json(err)
     }
 };
 

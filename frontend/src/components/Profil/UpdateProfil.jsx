@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateBio } from "../../actions/userActions";
 import LeftNav from "../LeftNav";
 import UploadImg from "./UploadImg";
 
@@ -7,9 +8,11 @@ const UpdateProfil = () => {
     const [bio, setBio] = useState('');
     const [updateForm, setUpdateForm] = useState(false);
     const userData = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();
 
     const handleUpdate = () => {
-
+        dispatch(updateBio(userData.uuid, bio));
+        setUpdateForm(false);
     }
 
     return (
@@ -40,7 +43,7 @@ const UpdateProfil = () => {
                                 defaultValue={userData.bio}
                                 onChange={(e) => setBio(e.target.value)}>
                             </textarea>
-                            <button onCliCk={handleUpdate}>Valider modification</button>
+                            <button onClick={handleUpdate}>Valider modification</button>
                             </>
                         )}
                     </div>
