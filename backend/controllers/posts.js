@@ -29,8 +29,6 @@ exports.createPost = async(req, res) => {
                 `../frontend/public/uploads/posts/${fileName}`
             )
         );
-        console.log(fileName);
-
     }
 
     const { userUuid, message, video } = req.body
