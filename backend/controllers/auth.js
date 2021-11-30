@@ -72,6 +72,7 @@ exports.signIn = async(req, res) => {
             if (user) {
                 if (bcrypt.compareSync(password, user.password)) {
                     const token = createToken(user.uuid)
+                    console.log(token);
                     res.cookie('jwt', token, { httpOnly: true, maxAge })
                     res.status(200).send({ message: "Vous êtes connecté !" })
                 } else {
