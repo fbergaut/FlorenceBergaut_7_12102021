@@ -38,15 +38,6 @@ module.exports = {
             bio: {
                 type: DataTypes.STRING
             },
-            followers: {
-                type: DataTypes.STRING
-            },
-            following: {
-                type: DataTypes.STRING
-            },
-            likes: {
-                type: DataTypes.STRING
-            },
             createdAt: {
                 allowNull: false,
                 type: DataTypes.DATE

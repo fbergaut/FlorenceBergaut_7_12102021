@@ -1,4 +1,5 @@
-const { User, Post } = require('../models')
+const { User, Post, Followers, Following } = require('../models');
+const followers = require('../models/followers');
 
 exports.createUser = async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -13,7 +14,9 @@ exports.createUser = async(req, res) => {
 
 exports.getAllUsers = async(req, res) => {
     try {
-        const users = await User.findAll()
+        const users = await User.findAll({
+            include: [{ model: Post, as: 'posts' }, { model: Followers, as: 'followers' }, { model: Following, as: 'followings' }]
+        })
         return res.json(users)
     } catch (err) {
         console.log(err)
@@ -26,7 +29,7 @@ exports.getOneUser = async(req, res) => {
     try {
         const user = await User.findOne({
             where: { uuid },
-            include: [{ model: Post, as: 'posts' }]
+            include: [{ model: Post, as: 'posts' }, { model: Followers, as: 'followers' }, { model: Following, as: 'followings' }]
         })
         return res.json(user)
     } catch (err) {
@@ -37,13 +40,15 @@ exports.getOneUser = async(req, res) => {
 
 exports.modifyUser = async(req, res) => {
     const uuid = req.params.uuid
-    const { bio } = req.body
+    const { bio, followers, following } = req.body
     try {
         const user = await User.findOne({
             where: { uuid }
         })
 
         user.bio = bio
+        user.followers = followers
+        user.following = following
 
         await user.save()
 

@@ -9,10 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ Post, Comment }) {
+        static associate({ Post, Comment, Followers, Following }) {
             // define association here
             this.hasMany(Post, { foreignKey: 'userId', as: 'posts' })
             this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' })
+            this.hasMany(Followers, { foreignKey: 'userId', as: 'followers' })
+            this.hasMany(Following, { foreignKey: 'userId', as: 'followings' })
         }
 
         // fonction qui permet de cacher l'id en retour au user
@@ -73,15 +75,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         bio: {
             type: DataTypes.STRING(800),
-        },
-        followers: {
-            type: DataTypes.STRING,
-        },
-        following: {
-            type: DataTypes.STRING,
-        },
-        likes: {
-            type: DataTypes.STRING
         }
     }, {
         hooks: {
