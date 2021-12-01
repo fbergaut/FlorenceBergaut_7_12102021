@@ -14,7 +14,9 @@ exports.createUser = async(req, res) => {
 
 exports.getAllUsers = async(req, res) => {
     try {
-        const users = await User.findAll()
+        const users = await User.findAll({
+            include: [{ model: Post, as: 'posts' }, { model: Followers, as: 'followers' }, { model: Following, as: 'followings' }]
+        })
         return res.json(users)
     } catch (err) {
         console.log(err)

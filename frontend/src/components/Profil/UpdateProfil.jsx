@@ -9,6 +9,7 @@ const UpdateProfil = () => {
     const [bio, setBio] = useState('');
     const [updateForm, setUpdateForm] = useState(false);
     const userData = useSelector((state) => state.userReducer);
+    const usersData = useSelector((state) => state.usersReducer);
     const dispatch = useDispatch();
     const [followingPopup, setFollowingPopup] = useState(false);
     const [followersPopup, setFollowersPopup] = useState(false);
@@ -67,7 +68,19 @@ const UpdateProfil = () => {
                             &#10005;
                         </span>
                         <ul>
-                            
+                            {usersData.map((user) => {
+                                for(let i = 0; i < userData.followings.length; i++) {
+                                    if (user.uuid === userData.followings[i].followingUuid) {
+                                        return (
+                                            <li key={user.uuid}>
+                                                <img src={user.picture} alt="user-pic" />
+                                                <h4>{user.username}</h4>
+                                                <h1>FOLLOW HANDLER</h1>
+                                            </li>
+                                        )
+                                    }
+                                }
+                            })}
                         </ul>
                     </div>
                 </div>}

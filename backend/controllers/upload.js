@@ -26,7 +26,6 @@ exports.uploadImg = async(req, res) => {
             `../frontend/public/uploads/profil/${fileName}`
         )
     );
-    console.log(fileName);
 
 
     try {
