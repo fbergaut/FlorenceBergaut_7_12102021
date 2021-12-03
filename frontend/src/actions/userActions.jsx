@@ -3,6 +3,8 @@ import axios from 'axios';
 export const GET_USER = "GET_USER";
 export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
 export const UPDATE_BIO = "UPDATE_BIO";
+export const FOLLOW_USER = "FOLLOW_USER";
+export const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 export const getUser = (uid) => {
     return (dispatch) => {
@@ -42,4 +44,14 @@ export const updateBio = (uuid, bio) => {
         })
         .catch((err) => console.log(err));    
     };
+};
+
+export const followUser = (followersUuid, idToFollow) => {
+    return (dispatch) => {
+        return axios({
+            method: "patch",
+            url: `${process.env.REACT_APP_API_URL}/users/`
+        })
+    }
+    
 }
