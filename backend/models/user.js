@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             this.hasMany(Post, { foreignKey: 'userId', as: 'posts' })
             this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' })
-            this.hasMany(Followers, { foreignKey: 'userUuid', as: 'followers' })
-            this.hasMany(Following, { foreignKey: 'userUuid', as: 'followings' })
+            this.hasMany(Followers, { foreignKey: 'userIdFollowers', as: 'followers' })
+            this.hasMany(Following, { foreignKey: 'userIdFollowing', as: 'followings' })
         }
 
         // fonction qui permet de cacher l'id en retour au user

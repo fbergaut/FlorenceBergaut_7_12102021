@@ -1,5 +1,4 @@
 const { User, Post, Followers, Following } = require('../models');
-const followers = require('../models/followers');
 
 exports.createUser = async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -48,7 +47,7 @@ exports.getOneUser = async(req, res) => {
 
 exports.modifyUser = async(req, res) => {
     const uuid = req.params.uuid
-    const { bio, followers, following } = req.body
+    const { bio } = req.body
     try {
         const user = await User.findOne({
             where: { uuid },
@@ -60,8 +59,6 @@ exports.modifyUser = async(req, res) => {
         })
 
         user.bio = bio
-        user.followers = followers
-        user.following = following
 
         await user.save()
 
@@ -87,23 +84,31 @@ exports.deleteUser = async(req, res) => {
 };
 
 exports.follow = async(req, res) => {
-    const userId = req.params.id
-    const { followingUuid } = req.body
-    const followerUuid = req.params.id
-    const { userIdBis } = req.body
+    const userUuid1 = req.params.uuid
+    const followersUuid = req.params.uuid
+    const { followingUuid, userUuid0 } = req.body
 
     try {
+        const userFollowing = await User.findOne({
+            where: { uuid: userUuid1 }
+        })
+
+        const userIdFollowing = userFollowing.id
 
         // add to the following list
-        const following = await Following.create({ followingUuid, userId })
-        console.log(following)
-        res.json(following)
+        const following = await Following.create({ followingUuid, userUuid1, userIdFollowing })
+
+        const userFollowers = await User.findOne({
+            where: { uuid: userUuid0 }
+        })
+
+        const userIdFollowers = userFollowers.id
 
         // add to the followers list
-        const followers = await Followers.create({ followerUuid, userIdBis })
+        const followers = await Followers.create({ followersUuid, userUuid0, userIdFollowers })
         console.log(followers)
-        res.json(followers)
 
+        return res.status(200).send({ message: "Adds to following and followers list succeeded !" })
     } catch (err) {
         return res.status(500).json(err);
     }

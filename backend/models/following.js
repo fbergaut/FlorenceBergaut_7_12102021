@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate({ User }) {
             // define association here
             //userId
-            this.belongsTo(User, { foreignKey: 'userUuid', as: 'user' });
+            this.belongsTo(User, { foreignKey: 'userIdFollowing', as: 'user' });
         }
         toJSON() {
             return {...this.get(), id: undefined }
@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     };
     Following.init({
         followingUuid: {
+            type: DataTypes.STRING
+        },
+        userUuid1: {
             type: DataTypes.STRING
         }
     }, {
