@@ -84,8 +84,8 @@ exports.deleteUser = async(req, res) => {
 };
 
 exports.follow = async(req, res) => {
-    const userUuid1 = req.params.uuid
-    const followersUuid = req.params.uuid
+    // const userUuid1 = req.params.uuid
+    const followersUuid = userUuid1 = req.params.uuid
     const { followingUuid, userUuid0 } = req.body
 
     try {
@@ -105,7 +105,7 @@ exports.follow = async(req, res) => {
         const userIdFollowers = userFollowers.id
 
         // add to the followers list
-        await Followers.create({ followersUuid, userUuid0, userIdFollowers })
+        await Followers.create({ followersUuid, userUuid0, userIdFollowers });
 
         return res.status(200).send({ message: "Adds to following and followers list succeeded !" })
     } catch (err) {
