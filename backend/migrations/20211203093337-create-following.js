@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = {
     up: async(queryInterface, DataTypes) => {
         await queryInterface.createTable('followings', {
@@ -11,7 +12,10 @@ module.exports = {
             followingUuid: {
                 type: DataTypes.STRING
             },
-            userId: {
+            userUuid1: {
+                type: DataTypes.STRING,
+            },
+            userIdFollowing: {
                 type: DataTypes.INTEGER,
                 alloNull: false
             },

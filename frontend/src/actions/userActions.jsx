@@ -3,6 +3,8 @@ import axios from 'axios';
 export const GET_USER = "GET_USER";
 export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
 export const UPDATE_BIO = "UPDATE_BIO";
+export const FOLLOW_USER = "FOLLOW_USER";
+export const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 export const getUser = (uid) => {
     return (dispatch) => {
@@ -42,4 +44,42 @@ export const updateBio = (uuid, bio) => {
         })
         .catch((err) => console.log(err));    
     };
-}
+};
+
+export const followUser = (followersUuid, userUuid0, followingUuid) => {
+    return (dispatch) => {
+        return axios({
+            method: "post",
+            url: `${process.env.REACT_APP_API_URL}/users/follow/` + followersUuid,
+            data: {userUuid0}
+        })
+        .then((res) => {
+            console.log(res);
+            dispatch({ type: FOLLOW_USER, payload: {userUuid0}});
+        })
+        .catch((err) => console.log(err));
+    };
+    
+};
+
+
+
+
+
+
+
+
+export const unfollowUser = (followersUuid, idToUnfollow) => {
+    return (dispatch) => {
+        return axios({
+            method: "delete",
+            url: `${process.env.REACT_APP_API_URL}/users/unfollow/` + followersUuid,
+            data: {idToUnfollow }
+        })
+        .then((res) => {
+            dispatch({ type: UNFOLLOW_USER, payload: {idToUnfollow}});
+        })
+        .catch((err) => console.log(err));
+    };
+    
+};

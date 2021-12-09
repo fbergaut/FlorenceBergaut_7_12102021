@@ -7,5 +7,7 @@ router.get("/:uuid", usersCtrl.getOneUser);
 router.get("/", usersCtrl.getAllUsers);
 router.put("/:uuid", usersCtrl.modifyUser);
 router.delete("/:uuid", usersCtrl.deleteUser);
+router.post("/follow/:uuid", usersCtrl.follow);
+router.delete("/unfollow/:uuid", usersCtrl.unfollow);
 
 module.exports = router;

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateBio } from "../../actions/userActions";
 import LeftNav from "../LeftNav";
 import { dateParser } from "../Utils";
+import FollowHandler from "./FollowHandler";
 import UploadImg from "./UploadImg";
 
 const UpdateProfil = () => {
@@ -69,13 +70,17 @@ const UpdateProfil = () => {
                         </span>
                         <ul>
                             {usersData.map((user) => {
-                                for(let i = 0; i < userData.followers.length; i++) {
-                                    if (user.uuid === userData.followers[i].followersUuid) {
+                                for(let i = 0; i < userData.followings.length; i++) {
+                                    if (user.uuid === userData.followings[i].followingUuid) {
+                                        //  console.log(user.uuid);
                                         return (
                                             <li key={user.uuid}>
                                                 <img src={user.picture} alt="user-pic" />
                                                 <h4>{user.username}</h4>
-                                                <h1>FOLLOW HANDLER</h1>
+                                                <div className="follow-handler">
+                                                    <FollowHandler idToFollow={user.uuid}/>
+                                                </div>
+                                                
                                             </li>
                                         )
                                     }
@@ -94,13 +99,15 @@ const UpdateProfil = () => {
                         </span>
                         <ul>
                             {usersData.map((user) => {
-                                for(let i = 0; i < userData.followings.length; i++) {
-                                    if (user.uuid === userData.followings[i].followingUuid) {
+                                for(let i = 0; i < userData.followers.length; i++) {
+                                    if (user.uuid === userData.followers[i].followersUuid) {
                                         return (
                                             <li key={user.uuid}>
                                                 <img src={user.picture} alt="user-pic" />
                                                 <h4>{user.username}</h4>
-                                                <h1>FOLLOW HANDLER</h1>
+                                                <div className="follow-handler">
+                                                    <FollowHandler idToFollow={user.uuid}/>
+                                                </div>
                                             </li>
                                         )
                                     }
@@ -110,6 +117,7 @@ const UpdateProfil = () => {
                     </div>
                 </div>
             )}
+            
         </div>
     )
 
