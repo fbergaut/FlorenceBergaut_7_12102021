@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { isEmpty } from "../Utils";
+import { dateParser, isEmpty } from "../Utils";
+import FollowHandler from "../Profil/FollowHandler";
 
 const Card = ({ post })=> {
     const [isLoading, setIsLoading] = useState(true);
@@ -41,8 +42,11 @@ const Card = ({ post })=> {
                                     })
                                 }
                             </h3>
-                            
+                            {post.posterUuid !== userData.uuid && (
+                                <FollowHandler idToFollow={post.posterUuid} type={'card'}/>
+                            )}
                         </div>
+                        <span>{dateParser(post.createdAt)}</span>
                     </div>
                 </div>
                 </>
