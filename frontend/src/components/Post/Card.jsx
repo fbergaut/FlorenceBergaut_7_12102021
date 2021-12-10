@@ -29,6 +29,22 @@ const Card = ({ post })=> {
                         alt="poster-pic" 
                         />
                 </div>
+                <div className="card-right">
+                    <div className="card-header">
+                        <div className="pseudo">
+                            <h3>
+                                {
+                                !isEmpty(usersData[0]) && 
+                                usersData.map((user) => {
+                                    if (user.uuid === post.posterUuid)
+                                    return user.username;
+                                    })
+                                }
+                            </h3>
+                            
+                        </div>
+                    </div>
+                </div>
                 </>
             )}
         </li>
