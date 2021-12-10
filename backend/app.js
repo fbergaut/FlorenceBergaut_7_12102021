@@ -13,6 +13,7 @@ app.use(helmet());
 
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/users')
+const uploadRoutes = require('./routes/upload')
 const postRoutes = require('./routes/posts')
 const commentRoutes = require('./routes/comments')
 
@@ -34,13 +35,13 @@ app.use(cookieParser());
 //---------------------- jwt
 app.get('*', checkUser);
 app.get('/jwtid', requireAuth, (req, res) => {
-    console.log(res.locals.user);
     res.status(200).json(res.locals.user.uuid)
 });
 
 //---------------------- routes
 app.use('/users', authRoutes)
 app.use('/users', userRoutes)
+app.use('/users', uploadRoutes)
 app.use('/posts', postRoutes)
 app.use('/comments', commentRoutes)
 

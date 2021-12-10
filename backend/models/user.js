@@ -9,10 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ Post, Comment }) {
+        static associate({ Post, Comment, Followers, Following }) {
             // define association here
             this.hasMany(Post, { foreignKey: 'userId', as: 'posts' })
             this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' })
+            this.hasMany(Followers, { foreignKey: 'userIdFollowers', as: 'followers' })
+            this.hasMany(Following, { foreignKey: 'userIdFollowing', as: 'followings' })
         }
 
         // fonction qui permet de cacher l'id en retour au user
@@ -73,15 +75,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         bio: {
             type: DataTypes.STRING(800),
-        },
-        followers: {
-            type: DataTypes.STRING,
-        },
-        following: {
-            type: DataTypes.STRING,
-        },
-        likes: {
-            type: DataTypes.STRING
         }
     }, {
         hooks: {
@@ -91,12 +84,12 @@ module.exports = (sequelize, DataTypes) => {
                     user.password = bcrypt.hashSync(user.password, salt);
                 }
             },
-            beforeUpdate: async(user) => {
-                if (user.password) {
-                    const salt = await bcrypt.genSaltSync(10, 'a');
-                    user.password = bcrypt.hashSync(user.password, salt);
-                }
-            }
+            // beforeUpdate: async(user) => {
+            //     if (user.password) {
+            //         const salt = await bcrypt.genSaltSync(10, 'a');
+            //         user.password = bcrypt.hashSync(user.password, salt);
+            //     }
+            // }
         },
         // validate: {
         //     userExist(req, res){
