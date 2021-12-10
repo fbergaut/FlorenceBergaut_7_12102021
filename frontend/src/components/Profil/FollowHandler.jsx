@@ -22,7 +22,6 @@ const FollowHandler = ({ idToFollow, type }) => {
         if (!isEmpty(userData.followings)) {
             const uuid = userData.followings.map((id)=>{
                 const idAbonnements = id.followingUuid;
-                console.log(idAbonnements);
                 return idAbonnements;
             });
             if (uuid.includes(idToFollow)) {

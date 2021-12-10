@@ -1,15 +1,15 @@
 const { User, Post, Comment } = require('../models')
 
 exports.createComment = async(req, res) => {
-    const { userUuid, postUuid, text } = req.body
+    const { commenterUuid, postUuid, text } = req.body
     try {
         const user = await User.findOne({
-            where: { uuid: userUuid }
+            where: { uuid: commenterUuid }
         })
         const post = await Post.findOne({
             where: { uuid: postUuid }
         })
-        const comment = await Comment.create({ text, userId: user.id, postId: post.id })
+        const comment = await Comment.create({ commenterUuid, commenterUsername: user.username, postUuid, text, userId: user.id, postId: post.id })
         return res.json(comment)
     } catch (err) {
         console.log(err)
