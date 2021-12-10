@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { isEmpty } from "../Utils";
 
 const Card = ({ post })=> {
@@ -17,7 +17,19 @@ const Card = ({ post })=> {
             {isLoading ? (
                 <i className='fas fa-spinner fa-spin'></i>
             ) : (
-                <h2>test</h2>
+                <>
+                <div className="card-left">
+                    <img src={
+                        !isEmpty(usersData[0]) && 
+                        usersData.map((user) => {
+                            if (user.uuid === post.posterUuid)
+                            return user.picture;
+                            }).join('')
+                        } 
+                        alt="poster-pic" 
+                        />
+                </div>
+                </>
             )}
         </li>
     );

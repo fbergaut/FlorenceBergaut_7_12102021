@@ -12,6 +12,9 @@ module.exports = {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
             },
+            posterUuid: {
+                type: DataTypes.STRING,
+            },
             message: {
                 type: DataTypes.STRING,
                 allowNull: false
