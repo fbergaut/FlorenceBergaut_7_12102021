@@ -66,7 +66,7 @@ const Card = ({ post })=> {
                     <div className="card-footer">
                         <div className="comment-icon">
                             <img src="./img/icons/message1.svg" alt="comment" />
-                            <span></span>
+                            <span>{post.comments.length}</span>
                         </div>
                     </div>
                 </div>

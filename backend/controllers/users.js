@@ -1,4 +1,4 @@
-const { User, Post, Followers, Following } = require('../models');
+const { User, Post, Comment, Followers, Following } = require('../models');
 
 exports.createUser = async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -16,6 +16,7 @@ exports.getAllUsers = async(req, res) => {
         const users = await User.findAll({
             include: [
                 { model: Post, as: 'posts' },
+                { model: Comment, as: 'comments' },
                 { model: Followers, as: 'followers' },
                 { model: Following, as: 'followings' }
             ]

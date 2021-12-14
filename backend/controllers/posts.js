@@ -1,4 +1,4 @@
-const { User, Post } = require('../models');
+const { User, Post, Comment } = require('../models');
 const fs = require("fs");
 const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
@@ -54,7 +54,7 @@ exports.createPost = async(req, res) => {
 
 exports.getAllPosts = async(req, res) => {
     try {
-        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
+        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }, { model: Comment, as: 'comments' }] })
         return res.json(posts)
     } catch (err) {
         console.log(err)

@@ -14,13 +14,11 @@ const FollowHandler = ({ idToFollow, type }) => {
     };
 
     const handleUnfollow = () => {
-        console.log(idToFollow);
         dispatch(unfollowUser(userData.uuid, idToFollow));
         setIsFollowed(false);
     };
 
     useEffect(() => {
-        console.log("bonjour");
         if (!isEmpty(userData.followings)) {
             const uuid = userData.followings.map((id)=>{
                 const idAbonnements = id.followingUuid;

@@ -22,7 +22,10 @@ exports.createComment = async(req, res) => {
 exports.getAllComments = async(req, res) => {
     try {
         const comments = await Comment.findAll({
-            include: [{ model: User, as: 'user' }, { model: Post, as: 'post' }]
+            include: [
+                { model: User, as: 'user' },
+                { model: Post, as: 'post' }
+            ]
         })
         return res.json(comments)
     } catch (err) {
