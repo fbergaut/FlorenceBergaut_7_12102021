@@ -114,8 +114,7 @@ exports.follow = async(req, res) => {
 };
 
 exports.unfollow = async(req, res) => {
-    const userUuid1 = req.params.uuid
-    const followersUuid = req.params.uuid
+    const followersUuid = userUuid1 = req.params.uuid
     const { followingUuid, userUuid0 } = req.body
 
     try {

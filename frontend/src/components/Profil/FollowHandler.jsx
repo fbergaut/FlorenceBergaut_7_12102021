@@ -9,12 +9,12 @@ const FollowHandler = ({ idToFollow, type }) => {
     const dispatch = useDispatch();
 
     const handleFollow = async() => {
-        console.log(idToFollow);
         await dispatch(followUser(userData.uuid, idToFollow));
         setIsFollowed(true);
     };
 
     const handleUnfollow = () => {
+        console.log(idToFollow);
         dispatch(unfollowUser(userData.uuid, idToFollow));
         setIsFollowed(false);
     };
@@ -22,8 +22,6 @@ const FollowHandler = ({ idToFollow, type }) => {
     useEffect(() => {
         console.log("bonjour");
         if (!isEmpty(userData.followings)) {
-             console.log(userData.followings);
-            //console.log(idToFollow);
             const uuid = userData.followings.map((id)=>{
                 const idAbonnements = id.followingUuid;
                 return idAbonnements;

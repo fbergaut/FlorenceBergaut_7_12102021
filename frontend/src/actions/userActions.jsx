@@ -67,21 +67,19 @@ export const followUser = (followersUuid, idToFollow) => {
 };
 
 
-
-
-
-
-
-
 export const unfollowUser = (followersUuid, idToUnfollow) => {
+    const unfollowBody = {
+        userUuid0 : idToUnfollow,
+        followingUuid : idToUnfollow
+        }
     return (dispatch) => {
         return axios({
             method: "delete",
             url: `${process.env.REACT_APP_API_URL}/users/unfollow/` + followersUuid,
-            data: {idToUnfollow }
+            data: unfollowBody
         })
         .then((res) => {
-            dispatch({ type: UNFOLLOW_USER, payload: {idToUnfollow}});
+            dispatch({ type: UNFOLLOW_USER, payload: unfollowBody.followingUuid});
         })
         .catch((err) => console.log(err));
     };
