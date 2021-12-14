@@ -84,7 +84,7 @@ exports.deleteUser = async(req, res) => {
 };
 
 exports.follow = async(req, res) => {
-    // const userUuid1 = req.params.uuid
+    // console.log(req.body);
     const followersUuid = userUuid1 = req.params.uuid
     const { followingUuid, userUuid0 } = req.body
 
