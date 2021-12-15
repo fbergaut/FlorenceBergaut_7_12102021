@@ -1,4 +1,4 @@
-const { User, Post, Comment } = require('../models');
+const { User, Post, Comment, Likers, Like } = require('../models');
 const fs = require("fs");
 const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
@@ -109,3 +109,36 @@ exports.deletePost = async(req, res) => {
         return res.status(500).json({ message: 'Something went wrong !' })
     }
 };
+
+exports.likePost = async(req, res) => {
+    const postUuid = req.params.uuid
+    const { posterUuid } = req.body
+    console.log(posterUuid);
+    try {
+        const postLiked = await Post.findOne({
+            where: { uuid: postUuid }
+        })
+
+        const postId = postLiked.id
+
+        // add to likers
+        await Likers.create({ posterUuid, postId })
+
+        const likedPost = await User.findOne({
+            where: { uuid: posterUuid }
+        })
+
+        const userId = likedPost.id
+
+        // add to like
+        await Like.create({ postUuid, userId })
+
+        return res.status(200).send({ message: "Like registered !" })
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+exports.unlikePost = async(req, res) => {
+
+}

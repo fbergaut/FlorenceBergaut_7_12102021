@@ -1,29 +1,16 @@
 'use strict';
 module.exports = {
     up: async(queryInterface, DataTypes) => {
-        await queryInterface.createTable('posts', {
+        await queryInterface.createTable('likes', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: DataTypes.INTEGER
             },
-            uuid: {
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4
-            },
-            posterUuid: {
+            postUuid: {
                 type: DataTypes.STRING,
-            },
-            message: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            picture: {
-                type: DataTypes.STRING
-            },
-            video: {
-                type: DataTypes.STRING
+                alloNull: false
             },
             userId: {
                 type: DataTypes.INTEGER,
@@ -40,6 +27,6 @@ module.exports = {
         });
     },
     down: async(queryInterface, DataTypes) => {
-        await queryInterface.dropTable('posts');
+        await queryInterface.dropTable('likes');
     }
 };
