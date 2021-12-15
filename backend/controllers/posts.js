@@ -54,7 +54,13 @@ exports.createPost = async(req, res) => {
 
 exports.getAllPosts = async(req, res) => {
     try {
-        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }, { model: Comment, as: 'comments' }] })
+        const posts = await Post.findAll({
+            include: [
+                { model: User, as: 'user' },
+                { model: Comment, as: 'comments' },
+                { model: Likers, as: 'likers' }
+            ]
+        })
         return res.json(posts)
     } catch (err) {
         console.log(err)
@@ -113,7 +119,7 @@ exports.deletePost = async(req, res) => {
 exports.likePost = async(req, res) => {
     const postUuid = req.params.uuid
     const { posterUuid } = req.body
-    console.log(posterUuid);
+
     try {
         const postLiked = await Post.findOne({
             where: { uuid: postUuid }
@@ -140,5 +146,22 @@ exports.likePost = async(req, res) => {
 }
 
 exports.unlikePost = async(req, res) => {
+    const postUuid = req.params.uuid
+    const { posterUuid } = req.body
 
+    try {
+        const postLikers = await Likers.findOne({
+            where: { posterUuid: posterUuid }
+        })
+        await postLikers.destroy()
+
+        const postLike = await Like.findOne({
+            where: { postUuid: postUuid }
+        })
+        await postLike.destroy()
+
+        return res.status(200).send({ message: "Like has been removed !" })
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 }

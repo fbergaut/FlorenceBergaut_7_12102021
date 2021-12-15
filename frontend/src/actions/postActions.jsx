@@ -2,6 +2,8 @@ import axios from 'axios';
 
 //posts
 export const GET_POSTS = "GET_POSTS";
+export const LIKE_POST = "LIKE_POST";
+export const UNLIKE_POST = "UNLIKE_POST";
 
 export const getPosts = () => {
     return (dispatch) => {
