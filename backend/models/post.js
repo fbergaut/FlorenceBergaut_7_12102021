@@ -9,10 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ User }) {
-            // define association here
+        static associate({ User, Comment }) {
+            //commentId
+            this.hasMany(Comment, { foreignKey: 'postId', as: 'comments' });
             //userId
-            this.belongsTo(User, { foreignKey: 'userId', as: 'user' })
+            this.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
         }
         toJSON() {
             return {...this.get(), id: undefined, userId: undefined }
@@ -22,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         uuid: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4
+        },
+        posterUuid: {
+            type: DataTypes.STRING,
         },
         message: {
             type: DataTypes.STRING,

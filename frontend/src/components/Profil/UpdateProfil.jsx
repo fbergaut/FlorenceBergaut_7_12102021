@@ -72,13 +72,12 @@ const UpdateProfil = () => {
                             {usersData.map((user) => {
                                 for(let i = 0; i < userData.followings.length; i++) {
                                     if (user.uuid === userData.followings[i].followingUuid) {
-                                        //  console.log(user.uuid);
                                         return (
                                             <li key={user.uuid}>
                                                 <img src={user.picture} alt="user-pic" />
                                                 <h4>{user.username}</h4>
                                                 <div className="follow-handler">
-                                                    <FollowHandler idToFollow={user.uuid}/>
+                                                    <FollowHandler idToFollow={user.uuid} type={'suggestion'}/>
                                                 </div>
                                                 
                                             </li>
@@ -106,7 +105,7 @@ const UpdateProfil = () => {
                                                 <img src={user.picture} alt="user-pic" />
                                                 <h4>{user.username}</h4>
                                                 <div className="follow-handler">
-                                                    <FollowHandler idToFollow={user.uuid}/>
+                                                    <FollowHandler idToFollow={user.uuid} type={'suggestion'}/>
                                                 </div>
                                             </li>
                                         )

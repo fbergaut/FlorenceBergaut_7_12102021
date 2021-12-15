@@ -1,4 +1,4 @@
-const { User, Post } = require('../models');
+const { User, Post, Comment } = require('../models');
 const fs = require("fs");
 const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
@@ -21,7 +21,7 @@ exports.createPost = async(req, res) => {
             return res.status(201).json({ errors });
         }
 
-        fileName = req.body.userUuid + Date.now() + '.jpg';
+        fileName = req.body.posterUuid + Date.now() + '.jpg';
 
         await pipeline(
             req.file.stream,
@@ -31,13 +31,13 @@ exports.createPost = async(req, res) => {
         );
     }
 
-    const { userUuid, message, video } = req.body
+    const { posterUuid, message, video } = req.body
     try {
         const user = await User.findOne({
-            where: { uuid: userUuid }
+            where: { uuid: posterUuid }
         })
         const post = await Post.create({
-            userUuid,
+            posterUuid,
             message,
             picture: req.file !== null ? "./uploads/posts/" + fileName : "",
             video,
@@ -54,7 +54,7 @@ exports.createPost = async(req, res) => {
 
 exports.getAllPosts = async(req, res) => {
     try {
-        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
+        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }, { model: Comment, as: 'comments' }] })
         return res.json(posts)
     } catch (err) {
         console.log(err)

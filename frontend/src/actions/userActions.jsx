@@ -46,16 +46,20 @@ export const updateBio = (uuid, bio) => {
     };
 };
 
-export const followUser = (followersUuid, userUuid0, followingUuid) => {
+export const followUser = (followersUuid, idToFollow) => {
+    const followBody = {
+        userUuid0 : idToFollow,
+        followingUuid : idToFollow
+        }
     return (dispatch) => {
         return axios({
             method: "post",
             url: `${process.env.REACT_APP_API_URL}/users/follow/` + followersUuid,
-            data: {userUuid0}
+            data: followBody
         })
         .then((res) => {
             console.log(res);
-            dispatch({ type: FOLLOW_USER, payload: {userUuid0}});
+            dispatch({ type: FOLLOW_USER, payload: followBody.followingUuid});
         })
         .catch((err) => console.log(err));
     };
@@ -63,21 +67,19 @@ export const followUser = (followersUuid, userUuid0, followingUuid) => {
 };
 
 
-
-
-
-
-
-
 export const unfollowUser = (followersUuid, idToUnfollow) => {
+    const unfollowBody = {
+        userUuid0 : idToUnfollow,
+        followingUuid : idToUnfollow
+        }
     return (dispatch) => {
         return axios({
             method: "delete",
             url: `${process.env.REACT_APP_API_URL}/users/unfollow/` + followersUuid,
-            data: {idToUnfollow }
+            data: unfollowBody
         })
         .then((res) => {
-            dispatch({ type: UNFOLLOW_USER, payload: {idToUnfollow}});
+            dispatch({ type: UNFOLLOW_USER, payload: unfollowBody.followingUuid});
         })
         .catch((err) => console.log(err));
     };

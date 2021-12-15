@@ -19,13 +19,13 @@ export default function userReducer(state = initialState, action) {
         case FOLLOW_USER:
             return {
                 ...state,
-                followings: [action.payload.followingUuid, ...state.followings],
+                followings: [...state.followings, { followingUuid: action.payload}]
             }
         case UNFOLLOW_USER:
             return {
                 ...state,
-                followings: state.followings.filter((id) => id !== action.payload.idToUnfollow),
-            }   
+                followings: state.followings.filter((uuid) => action.payload !== uuid.followingUuid)
+            }  
         default:
             return state;
     }
