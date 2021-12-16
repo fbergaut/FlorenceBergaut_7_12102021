@@ -4,6 +4,8 @@ import axios from 'axios';
 export const GET_POSTS = "GET_POSTS";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
+export const UPDATE_POST = "UPDATE_POST";
+export const DELETE_POST = "DELETE_POST";
 
 export const getPosts = (num) => {
     return (dispatch) => {
@@ -43,4 +45,31 @@ export const unlikePost = (postUuid, posterUuid) => {
             })
             .catch((err) => console.log(err));
         };
+};
+
+export const updatePost = (postUuid, message) => {
+    return (dispatch) => {
+        return axios({
+            method: "put",
+            url: `${process.env.REACT_APP_API_URL}/posts/${postUuid}`,
+            data: {message}
+        })
+        .then((res) => {
+                dispatch({ type: UPDATE_POST, payload: {postUuid, message}});
+            })
+            .catch((err) => console.log(err));
+    };
+};
+
+export const deletePost = (postUuid) => {
+    return (dispatch) => {
+        return axios({
+            method: "delete",
+            url: `${process.env.REACT_APP_API_URL}/posts/${postUuid}`
+        })
+        .then((res) => {
+                dispatch({ type: DELETE_POST, payload: {postUuid}});
+            })
+            .catch((err) => console.log(err));
+    };
 };
