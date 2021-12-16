@@ -29,3 +29,17 @@ export const likePost = (postUuid, posterUuid) => {
             .catch((err) => console.log(err));
         };
 };
+
+export const unlikePost = (postUuid, posterUuid) => {
+    return (dispatch) => {
+        return axios({
+                method: "delete",
+                url: `${process.env.REACT_APP_API_URL}/posts/unlike-post/` + postUuid,
+                data: { posterUuid }
+            })
+            .then((res) => {
+                dispatch({ type: UNLIKE_POST, payload: {postUuid, posterUuid}});
+            })
+            .catch((err) => console.log(err));
+        };
+};

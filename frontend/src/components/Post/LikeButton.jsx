@@ -3,7 +3,8 @@ import {UidContext} from "../AppContext";
 import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
 import { useDispatch } from 'react-redux';
-import { likePost } from '../../actions/postActions';
+import { likePost, unlikePost } from '../../actions/postActions';
+import { isEmpty } from "../Utils";
 
 const LikeButton = ({ post }) => {
     const [liked, setLiked] = useState(false);
@@ -16,12 +17,23 @@ const LikeButton = ({ post }) => {
         setLiked(true)
     };
 
-    const unlike = () => {};
+    const unlike = () => {
+        dispatch(unlikePost(post.uuid, uid))
+        setLiked(false)
+    };
     
 
     useEffect(() =>{
         //console.log(uid);
-        if(post.likers.includes(uid)) setLiked(true)
+        if (!isEmpty(post.likers)) {
+            const uuid = post.likers.map((id)=>{
+                const idLikers = id.posterUuid;
+                return idLikers;
+            });
+            if(uuid.includes(uid)) {
+                setLiked(true)}
+            else setLiked(false);
+        }
     }, [uid, post.likers, liked])
 
     return (
@@ -41,6 +53,7 @@ const LikeButton = ({ post }) => {
             {uid && liked  && (
                 <img src="./img/icons/heart-filled.svg" onClick={unlike} alt='unlike' />
             )}
+            <span>{post.likers.length}</span>
         </div>
     );
 };
