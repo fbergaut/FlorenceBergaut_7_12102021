@@ -6,12 +6,13 @@ import  Card  from "./Post/Card";
 
 const Thread = () => {
     const [loadPost, setLoadPost] = useState(true);
+    const [count, setCount]= useState(5);
     const dispatch = useDispatch();
     const posts = useSelector((state) => state.postReducer);
 
     useEffect(() => {
         if (loadPost) {
-            dispatch(getPosts());
+            dispatch(getPosts(count));
             setLoadPost(false)
         }
     }, [loadPost, dispatch])
