@@ -95,7 +95,7 @@ exports.modifyPost = async(req, res) => {
 
         await post.save()
 
-        return res.json(post)
+        return res.json({ message: 'Post modified !' })
     } catch (err) {
         console.log(err)
         return res.status(500).json(post)

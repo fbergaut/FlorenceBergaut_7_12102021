@@ -1,4 +1,4 @@
-import { GET_POSTS, LIKE_POST, UNLIKE_POST } from "../actions/postActions";
+import { GET_POSTS, LIKE_POST, UNLIKE_POST, UPDATE_POST } from "../actions/postActions";
 
 const initialState = {};
 
@@ -27,6 +27,15 @@ export default function postReducer(state = initialState, action)
                 }
                 return post;
             });
+        case UPDATE_POST:
+            return state.map((post) => {
+                if(post.uuid === action.payload.postUuid) {
+                    return {
+                        ...post,
+                        message: action.payload.message
+                    }
+                } else return post;
+            })
         default:
             return state;    
     }

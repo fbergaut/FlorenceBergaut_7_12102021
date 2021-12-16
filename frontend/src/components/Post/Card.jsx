@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { dateParser, isEmpty } from "../Utils";
 import FollowHandler from "../Profil/FollowHandler";
 import LikeButton from "./LikeButton";
+import { updatePost } from "../../actions/postActions";
 
 const Card = ({ post })=> {
     const [isLoading, setIsLoading] = useState(true);
@@ -11,9 +12,13 @@ const Card = ({ post })=> {
     const [textUpdate, setTextUpdate] = useState(null);
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();
 
-    const updateItem = async() => {
-
+    const updateItem = () => {
+        if(textUpdate) {
+            dispatch(updatePost(post.uuid, textUpdate))
+        }
+        setIsUpdated(false);
     }
 
     useEffect(() => {
