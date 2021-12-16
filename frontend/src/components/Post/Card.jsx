@@ -7,8 +7,14 @@ import LikeButton from "./LikeButton";
 
 const Card = ({ post })=> {
     const [isLoading, setIsLoading] = useState(true);
+    const [isUpdated, setIsUpdated] = useState(true);
+    const [textUpdate, setTextUpdate] = useState(null);
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
+
+    const updateItem = async() => {
+        
+    }
 
     useEffect(() => {
         !isEmpty(usersData[0]) && setIsLoading(false);
@@ -52,7 +58,20 @@ const Card = ({ post })=> {
                         </div>
                         <span>{dateParser(post.createdAt)}</span>
                     </div>
-                    <p>{post.message}</p>
+                    {isUpdated === false && <p>{post.message}</p>}
+                    {isUpdated && (
+                        <div className="update-post">
+                            <textarea
+                                defaultValue={post.message}
+                                onChange={(e) => setTextUpdate(e.target.value)}
+                            />
+                            <div className="button-container">
+                                <button className="btn" onClick={updateItem}>
+                                    Valider modification
+                                </button>
+                            </div>
+                        </div>
+                    )}
                     {post.picture && (
                         <img src={post.picture} alt="card-pic" className="card-pic"/>
                     )}
