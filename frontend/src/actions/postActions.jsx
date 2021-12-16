@@ -15,3 +15,17 @@ export const getPosts = () => {
             .catch((err) => console.log(err))
     };
 };
+
+export const likePost = (postUuid, posterUuid) => {
+    return (dispatch) => {
+        return axios({
+                method: "post",
+                url: `${process.env.REACT_APP_API_URL}/posts/like-post/` + postUuid,
+                data: { posterUuid }
+            })
+            .then((res) => {
+                dispatch({ type: LIKE_POST, payload: {postUuid, posterUuid}});
+            })
+            .catch((err) => console.log(err));
+        };
+};

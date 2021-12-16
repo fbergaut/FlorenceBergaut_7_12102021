@@ -2,18 +2,25 @@ import React, { useContext, useEffect, useState } from 'react';
 import {UidContext} from "../AppContext";
 import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
+import { useDispatch } from 'react-redux';
+import { likePost } from '../../actions/postActions';
 
 const LikeButton = ({ post }) => {
     const [liked, setLiked] = useState(false);
     const uid = useContext(UidContext);
+    const dispatch = useDispatch();
 
-    const like = () => {};
+    const like = () => {
+        console.log(uid);
+        dispatch(likePost(post.uuid, uid))
+        setLiked(true)
+    };
 
     const unlike = () => {};
     
 
     useEffect(() =>{
-        console.log(uid);
+        //console.log(uid);
         if(post.likers.includes(uid)) setLiked(true)
     }, [uid, post.likers, liked])
 
@@ -25,7 +32,7 @@ const LikeButton = ({ post }) => {
                 position={["bottom center", "bottom right", "bottom left"]}
                 closeOnDocumentClick
                 >
-                <div>Connectez-vous pour liker !</div>
+                <div>Connectez-vous<br/> pour liker 😉</div>
                 </Popup>
             )}
             {uid && liked === false && (
