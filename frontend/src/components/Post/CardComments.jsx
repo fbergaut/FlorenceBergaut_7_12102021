@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from '../Utils';
+import FollowHandler from '../Profil/FollowHandler';
+import { isEmpty, timestampParser } from '../Utils';
 
 const CardComments = ({ post }) => {
     const [text, setText] = useState("");
@@ -25,6 +26,21 @@ const CardComments = ({ post }) => {
                                         }).join('')
                                     } 
                             alt="commenter-pic" />
+                        </div>
+                        <div className="right-part">
+                            <div className="comment-header">
+                                <div className="pseudo">
+                                    <h3>{comment.commenterUsername}</h3>
+                                    {comment.commenterUuid !== userData.uuid && (
+                                        <FollowHandler 
+                                            idToFollow={comment.commenterUuid} 
+                                            type={'card'}
+                                        />
+                                    )}
+                                </div>
+                                <span>{timestampParser(comment.createdAt)}</span>
+                            </div>
+                            <p>{comment.text}</p>
                         </div>
                     </div>
                 )
