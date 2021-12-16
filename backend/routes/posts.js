@@ -11,5 +11,7 @@ router.get("/:uuid", checkUser, postsCtrl.getOnePost);
 router.get("/", checkUser, postsCtrl.getAllPosts);
 router.put("/:uuid", checkUser, postsCtrl.modifyPost);
 router.delete("/:uuid", checkUser, postsCtrl.deletePost);
+router.post("/like-post/:uuid", checkUser, postsCtrl.likePost);
+router.delete("/unlike-post/:uuid", checkUser, postsCtrl.unlikePost);
 
 module.exports = router;

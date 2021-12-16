@@ -63,7 +63,6 @@ export const followUser = (followersUuid, idToFollow) => {
         })
         .catch((err) => console.log(err));
     };
-    
 };
 
 
@@ -83,5 +82,4 @@ export const unfollowUser = (followersUuid, idToUnfollow) => {
         })
         .catch((err) => console.log(err));
     };
-    
 };
