@@ -7,13 +7,13 @@ import LikeButton from "./LikeButton";
 
 const Card = ({ post })=> {
     const [isLoading, setIsLoading] = useState(true);
-    const [isUpdated, setIsUpdated] = useState(true);
+    const [isUpdated, setIsUpdated] = useState(false);
     const [textUpdate, setTextUpdate] = useState(null);
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
 
     const updateItem = async() => {
-        
+
     }
 
     useEffect(() => {
@@ -85,6 +85,13 @@ const Card = ({ post })=> {
                             allowFullScreen
                             title={post.uuid}
                         ></iframe>
+                    )}
+                    {userData.uuid === post.posterUuid && (
+                        <div className="button-container">
+                            <div onClick={() => setIsUpdated(!isUpdated)}>
+                                <img src="./img/icons/edit.svg" alt="edit" />
+                            </div>
+                        </div>
                     )}
                     <div className="card-footer">
                         <div className="comment-icon">
