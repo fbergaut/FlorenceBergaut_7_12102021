@@ -7,6 +7,9 @@ export const UNLIKE_POST = "UNLIKE_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
 
+//comments
+export const ADD_COMMENT = "ADD_COMMENT";
+
 export const getPosts = (num) => {
     return (dispatch) => {
         return axios
@@ -69,6 +72,20 @@ export const deletePost = (postUuid) => {
         })
         .then((res) => {
                 dispatch({ type: DELETE_POST, payload: {postUuid}});
+            })
+            .catch((err) => console.log(err));
+    };
+};
+
+export const addComment = (postUuid, commenterUuid, text, commenterUsername) => {
+    return (dispatch) => {
+        return axios({
+            method: "post",
+            url: `${process.env.REACT_APP_API_URL}/comments/`,
+            data: {postUuid, commenterUuid, text, commenterUsername}
+        })
+        .then((res) => {
+                dispatch({ type: ADD_COMMENT, payload: {postUuid}});
             })
             .catch((err) => console.log(err));
     };

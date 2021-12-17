@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { addComment, getPosts } from '../../actions/postActions';
 import FollowHandler from '../Profil/FollowHandler';
 import { isEmpty, timestampParser } from '../Utils';
 
@@ -10,7 +11,15 @@ const CardComments = ({ post }) => {
     const userData = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
 
-    const handleComment = () => {}
+    const handleComment = (e) => {
+        e.preventDefault();
+
+        if(text) {
+            dispatch(addComment(post.uuid, userData.uuid, text, userData.username))
+                .then(() => dispatch(getPosts()))
+                .then(() => setText(''));
+        }
+    };
 
     return (
         <div className="comments-container">
