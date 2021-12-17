@@ -43,8 +43,20 @@ const CardComments = ({ post }) => {
                             <p>{comment.text}</p>
                         </div>
                     </div>
-                )
+                );
             })}
+            {userData.uuid && (
+                <form action="" onSubmit={handleComment} className='comment-form'>
+                    <input
+                        type="text" 
+                        name='text' 
+                        onChange={(e) => setText(e.target.value)} 
+                        value={text} placeholder='Laisser un commentaire'
+                    />
+                    <br />
+                    <input type="submit" value="envoyer"/>
+                </form>
+            )}
         </div>
     );
 };
