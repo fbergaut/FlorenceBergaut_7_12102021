@@ -75,8 +75,16 @@ exports.modifyComment = async(req, res) => {
 };
 
 exports.deleteComment = async(req, res) => {
-    const uuid = req.params.uuid
+    const postUuid = req.params.uuid
+    const { uuid } = req.body
+
     try {
+        await Post.findOne({
+            where: {
+                uuid: postUuid
+            }
+        })
+
         const comment = await Comment.findOne({
             where: { uuid }
         })

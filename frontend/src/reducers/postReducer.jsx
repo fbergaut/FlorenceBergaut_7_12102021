@@ -1,4 +1,4 @@
-import { DELETE_POST, GET_POSTS, LIKE_POST, UNLIKE_POST, UPDATE_POST, EDIT_COMMENT } from "../actions/postActions";
+import { DELETE_POST, GET_POSTS, LIKE_POST, UNLIKE_POST, UPDATE_POST, EDIT_COMMENT, DELETE_COMMENT } from "../actions/postActions";
 
 const initialState = {};
 
@@ -51,6 +51,15 @@ export default function postReducer(state = initialState, action)
                                 } 
                             } else return comment;
                         })
+                    }
+                } else return post;
+            });
+        case DELETE_COMMENT:
+            return state.map((post) => {
+                if (post.uuid === action.payload.postUuid) {
+                    return {
+                        ...post,
+                        comments: post.comments.filter((comment) => comment.uuid !== action.payload.uuid)
                     }
                 } else return post;
             });

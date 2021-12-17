@@ -10,6 +10,7 @@ export const DELETE_POST = "DELETE_POST";
 //comments
 export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_COMMENT = "EDIT_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 
 export const getPosts = (num) => {
@@ -102,6 +103,20 @@ export const editComment = (postUuid, uuid, text) => {
         })
         .then((res) => {
                 dispatch({ type: EDIT_COMMENT, payload: {postUuid, uuid, text}});
+            })
+            .catch((err) => console.log(err));
+    };
+};
+
+export const deleteComment = (postUuid, uuid) => {
+    return (dispatch) => {
+        return axios({
+            method: "delete",
+            url: `${process.env.REACT_APP_API_URL}/comments/${postUuid}`,
+            data: {uuid}
+        })
+        .then((res) => {
+                dispatch({ type: DELETE_COMMENT, payload: {postUuid, uuid}});
             })
             .catch((err) => console.log(err));
     };
