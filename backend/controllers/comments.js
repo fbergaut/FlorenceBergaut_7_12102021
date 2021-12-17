@@ -50,9 +50,15 @@ exports.getOneComment = async(req, res) => {
     }
 };
 exports.modifyComment = async(req, res) => {
-    const uuid = req.params.uuid
-    const { text } = req.body
+    const postUuid = req.params.uuid
+    const { uuid, text } = req.body
     try {
+        await Post.findOne({
+            where: {
+                uuid: postUuid
+            }
+        })
+
         const comment = await Comment.findOne({
             where: { uuid }
         })

@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect }  from 'react';
+import { useDispatch } from 'react-redux';
+import { editComment } from '../../actions/postActions';
 import { UidContext } from "../AppContext";
 
 const EditDeletComment = ({ comment,postUuid }) => {
@@ -6,9 +8,16 @@ const EditDeletComment = ({ comment,postUuid }) => {
     const [edit, setEdit] = useState(false);
     const [text, setText] = useState("");
     const uid = useContext(UidContext);
+    const dispatch = useDispatch();
 
-    const handleEdit = () => {
+    const handleEdit = (e) => {
+        e.preventDefault();
 
+        if (text){
+            dispatch(editComment(postUuid, comment.uuid, text));
+            setText('');
+            setEdit(false);
+        }
     };
 
     useEffect(() => {
