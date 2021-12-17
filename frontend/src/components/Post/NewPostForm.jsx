@@ -11,6 +11,21 @@ const NewPostForm = () => {
     const [file, setFile] = useState();
     const userData = useSelector((state) => state.userReducer);
 
+    const handlePicture = () => {
+
+    };
+
+    const handlePost = () => {
+
+    };
+
+    const cancelPost = () => {
+        setMessage('');
+        setPostPicture('');
+        setVideo('');
+        setFile('');
+    };
+
     useEffect(() => {
         if (!isEmpty(userData)) setIsLoading(false);
     }, [userData])
@@ -38,6 +53,31 @@ const NewPostForm = () => {
                         onChange={(e) => setMessage(e.target.value)}
                         value={message}
                     />
+                    <div className="footer-form">
+                        <div className="icon">
+                            {isEmpty(video) && (
+                                <>
+                                    <img src="./img/icons/picture.svg" alt="img" />
+                                    <input 
+                                        type="file" 
+                                        id="file-upload" 
+                                        name="file" 
+                                        accept=".jpg, .jpeg, .png" 
+                                        onChange={(e) => handlePicture()}
+                                    />
+                                </>
+                            )}
+                            {video && (
+                                <button onClick={() => setVideo("")}>Supprimer video</button>
+                            )}
+                        </div>
+                        <div className="btn-send">
+                            {message || postPicture || video.length > 20 ? (
+                                <button className="cancel" onClick={cancelPost}>Annuler message</button>
+                            ) : null}
+                            <button className="send" onClick={handlePost}>Envoyer</button>
+                        </div>
+                    </div>
                 </div>
                 </>
             )}
