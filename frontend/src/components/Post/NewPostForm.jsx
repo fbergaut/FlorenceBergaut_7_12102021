@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { isEmpty, timestampParser } from '../Utils';
 import { NavLink } from "react-router-dom";
+import { addPost, getPosts } from '../../actions/postActions';
 
 const NewPostForm = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -10,14 +11,31 @@ const NewPostForm = () => {
     const [video, setVideo] = useState('');
     const [file, setFile] = useState();
     const userData = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();
 
-    const handlePicture = () => {
+    const handlePost = async () => {
+        if (message || postPicture || video) {
+            const data = new FormData();
+            data.append('posterUuid', userData.uuid);
+            data.append('message', message);
+            if (file) data.append('file', file);
+            data.append('video', video);
 
+
+            await dispatch(addPost(data));
+            dispatch(getPosts());
+            cancelPost();
+
+        } else {
+            alert("Veuillez entrer un message")
+        }
     };
 
-    const handlePost = () => {
-
-    };
+    const handlePicture = (e) => {
+        setPostPicture(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
+        setVideo('');
+  }; 
 
     const cancelPost = () => {
         setMessage('');
@@ -73,7 +91,7 @@ const NewPostForm = () => {
                     {message || postPicture || video.length > 20 ? (
                         <li className="card-container">
                             <div className="card-left">
-                                <img src={userData.picture} alt="user-picture" />
+                                <img src={userData.picture} alt="user-pic" />
                             </div>
                             <div className="card-right">
                                 <div className="card-header">
@@ -105,10 +123,10 @@ const NewPostForm = () => {
                                     <img src="./img/icons/picture.svg" alt="img" />
                                     <input 
                                         type="file" 
-                                        id="file-upload" 
+                                        id="file-upload"
                                         name="file" 
                                         accept=".jpg, .jpeg, .png" 
-                                        onChange={(e) => handlePicture()}
+                                        onChange={(e) => handlePicture(e)}
                                     />
                                 </>
                             )}
