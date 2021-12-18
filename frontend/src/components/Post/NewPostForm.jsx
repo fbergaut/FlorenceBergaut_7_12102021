@@ -10,9 +10,15 @@ const NewPostForm = () => {
     const [video, setVideo] = useState('');
     const [file, setFile] = useState();
     const userData = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();
 
     const handlePost = async () => {
-        if(message || postPicture || video) {
+        if (message || postPicture || video) {
+            const data = new FormData();
+            data.append('posterUuid', userData.uuid);
+            data.append('message', message);
+            if (file) data.append('file', file);
+            data.append('video', video);
 
         } else {
             alert("Veuillez entrer un message")
