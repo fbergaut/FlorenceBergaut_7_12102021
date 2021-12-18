@@ -11,13 +11,19 @@ const NewPostForm = () => {
     const [file, setFile] = useState();
     const userData = useSelector((state) => state.userReducer);
 
-    const handlePicture = () => {
+    const handlePost = async () => {
+        if(message || postPicture || video) {
 
+        } else {
+            alert("Veuillez entrer un message")
+        }
     };
 
-    const handlePost = () => {
-
-    };
+    const handlePicture = (e) => {
+        setPostPicture(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
+        setVideo('');
+  }; 
 
     const cancelPost = () => {
         setMessage('');
@@ -73,7 +79,7 @@ const NewPostForm = () => {
                     {message || postPicture || video.length > 20 ? (
                         <li className="card-container">
                             <div className="card-left">
-                                <img src={userData.picture} alt="user-picture" />
+                                <img src={userData.picture} alt="user-pic" />
                             </div>
                             <div className="card-right">
                                 <div className="card-header">
@@ -105,10 +111,10 @@ const NewPostForm = () => {
                                     <img src="./img/icons/picture.svg" alt="img" />
                                     <input 
                                         type="file" 
-                                        id="file-upload" 
+                                        id="file-upload"
                                         name="file" 
                                         accept=".jpg, .jpeg, .png" 
-                                        onChange={(e) => handlePicture()}
+                                        onChange={(e) => handlePicture(e)}
                                     />
                                 </>
                             )}
