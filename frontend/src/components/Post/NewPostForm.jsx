@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { isEmpty, timestampParser } from '../Utils';
 import { NavLink } from "react-router-dom";
+import { addPost, getPosts } from '../../actions/postActions';
 
 const NewPostForm = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +20,11 @@ const NewPostForm = () => {
             data.append('message', message);
             if (file) data.append('file', file);
             data.append('video', video);
+
+
+            await dispatch(addPost(data));
+            dispatch(getPosts());
+            cancelPost();
 
         } else {
             alert("Veuillez entrer un message")
