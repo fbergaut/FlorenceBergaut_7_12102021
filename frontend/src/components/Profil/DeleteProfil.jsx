@@ -5,12 +5,15 @@ import { deleteUser } from '../../actions/userActions';
 const DeleteProfil = (props) =>{
     const dispatch = useDispatch();
 
-    const deleteQuote = ()=> dispatch(deleteUser(props.userUuid))
-    
+    const deleteQuote = ()=> {
+        dispatch(deleteUser(props.userUuid))
+    }
+
     return (
         <div onClick={() => {
             if (window.confirm('Voulez-vous supprimer ce profil ?')) { 
-                deleteQuote() 
+                deleteQuote();
+                window.location.reload();
             }
         }}>
             <h6>Supprimer le profil</h6>

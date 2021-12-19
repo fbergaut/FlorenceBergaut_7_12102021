@@ -3,6 +3,7 @@ import { DELETE_USER, FOLLOW_USER, GET_USER, UNFOLLOW_USER, UPDATE_BIO, UPLOAD_P
 const initialState = {};
 
 export default function userReducer(state = initialState, action) {
+    console.log(action);
     switch (action.type) {
         case GET_USER:
             return action.payload
@@ -27,8 +28,7 @@ export default function userReducer(state = initialState, action) {
                 followings: state.followings.filter((uuid) => action.payload !== uuid.followingUuid)
             }
         case DELETE_USER:
-            return {
-                ...state.filter((user) => user.uuid !== action.payload.userUuid)}
+            return delete state.uuid
         default:
             return state;
     }
