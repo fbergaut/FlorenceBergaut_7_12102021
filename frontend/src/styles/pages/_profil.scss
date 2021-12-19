@@ -215,6 +215,21 @@
                     transform: translateX(2px);
                 }
             }
+            h6 {
+                background: black;
+                color: $color-4;
+                font-family: $font-1;
+                margin: 20px 0;
+                padding: 12px;
+                font-size: 1.1rem;
+                border-radius: 20px;
+                transition: 0.2s;
+                cursor: pointer;
+                &:hover {
+                    filter: brightness(110%);
+                    transform: translateX(2px);
+                }
+            }
         }
     }
     .popup-profil-container {
