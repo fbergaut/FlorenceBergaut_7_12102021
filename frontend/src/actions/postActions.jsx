@@ -13,6 +13,9 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_COMMENT = "EDIT_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 
+//errors
+export const GET_POST_ERRORS = "GET_POST_ERRORS"
+
 
 export const getPosts = (num) => {
     return (dispatch) => {
@@ -30,6 +33,13 @@ export const addPost = (data) => {
     return (dispatch) => {
         return axios
             .post(`${process.env.REACT_APP_API_URL}/posts`, data)
+            .then((res) => {
+                if (res.data.errors) {
+                    dispatch({ type: GET_POST_ERRORS, payload: res.data.errors})
+                } else {
+                    dispatch({ type: GET_POST_ERRORS, payload: '' })
+                }
+            })
     };
 };
 
