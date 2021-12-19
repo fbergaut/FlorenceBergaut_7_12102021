@@ -61,6 +61,7 @@ exports.getAllPosts = async(req, res) => {
                 { model: Likers, as: 'likers' }
             ]
         })
+
         return res.json(posts)
     } catch (err) {
         console.log(err)

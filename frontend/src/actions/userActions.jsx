@@ -5,6 +5,10 @@ export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
 export const UPDATE_BIO = "UPDATE_BIO";
 export const FOLLOW_USER = "FOLLOW_USER";
 export const UNFOLLOW_USER = "UNFOLLOW_USER";
+export const DELETE_USER = "DELETE_USER";
+
+//errors
+export const GET_USER_ERRORS = "GET_USER_ERRORS";
 
 export const getUser = (uid) => {
     return (dispatch) => {
@@ -22,11 +26,16 @@ export const uploadPicture = (data, uuid) => {
         return axios
             .post(`${process.env.REACT_APP_API_URL}/users/upload`, data)
             .then((res) => {
-                return axios
-                    .get(`${process.env.REACT_APP_API_URL}/users/${uuid}`)
-                    .then((res) => {
-                        dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture })
-                    })
+                if (res.data.errors) {
+                    dispatch({ type: GET_USER_ERRORS, payload: res.data.errors})
+                } else {
+                    dispatch({ type: GET_USER_ERRORS, payload: ""})
+                    return axios
+                        .get(`${process.env.REACT_APP_API_URL}/users/${uuid}`)
+                        .then((res) => {
+                            dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture })
+                        })
+                }
             })
             .catch((err) => console.log(err));
     };
@@ -81,5 +90,18 @@ export const unfollowUser = (followersUuid, idToUnfollow) => {
             dispatch({ type: UNFOLLOW_USER, payload: unfollowBody.followingUuid});
         })
         .catch((err) => console.log(err));
+    };
+};
+
+export const deleteUser= (userUuid) => {
+    return (dispatch) => {
+        return axios({
+            method: "delete",
+            url: `${process.env.REACT_APP_API_URL}/users/${userUuid}`
+        })
+        .then((res) => {
+                dispatch({ type: DELETE_USER, payload: {userUuid}});
+            })
+            .catch((err) => console.log(err));
     };
 };

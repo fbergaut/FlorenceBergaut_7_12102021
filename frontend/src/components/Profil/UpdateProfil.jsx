@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateBio } from "../../actions/userActions";
 import LeftNav from "../LeftNav";
 import { dateParser } from "../Utils";
+import DeleteProfil from "./DeleteProfil";
 import FollowHandler from "./FollowHandler";
 import UploadImg from "./UploadImg";
 
@@ -11,6 +12,7 @@ const UpdateProfil = () => {
     const [updateForm, setUpdateForm] = useState(false);
     const userData = useSelector((state) => state.userReducer);
     const usersData = useSelector((state) => state.usersReducer);
+    const error = useSelector((state) => state.errorReducer.userError);
     const dispatch = useDispatch();
     const [followingPopup, setFollowingPopup] = useState(false);
     const [followersPopup, setFollowersPopup] = useState(false);
@@ -29,8 +31,8 @@ const UpdateProfil = () => {
                     <h3>Photo de profil</h3>
                     <img src={userData.picture} alt="user" />
                     <UploadImg />
-                    {/* <p>{errors.maxSize}</p>
-                    <p>{errors.format}</p> */}
+                    <p>{error.maxSize}</p>
+                    <p>{error.format}</p>
                 </div>
                 <div className="right-part">
                     <div className="bio-update">
@@ -59,6 +61,7 @@ const UpdateProfil = () => {
                     <h5 onClick={()=>setFollowersPopup(true)}>
                         Abonnés : {userData.followers ?userData.followers.length : ""}
                     </h5>
+                    <DeleteProfil userUuid={userData.uuid}/>
                 </div>
             </div>
             {followingPopup && (
