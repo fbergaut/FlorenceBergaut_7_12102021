@@ -30,11 +30,6 @@ export const addPost = (data) => {
     return (dispatch) => {
         return axios
             .post(`${process.env.REACT_APP_API_URL}/posts`, data)
-            // .then((res) => {
-            //     const array = res.data.slice(0, num)
-            //     dispatch({ type: GET_POSTS, payload: array })
-            // })
-            // .catch((err) => console.log(err))
     };
 };
 

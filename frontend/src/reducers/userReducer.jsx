@@ -1,4 +1,4 @@
-import { FOLLOW_USER, GET_USER, UNFOLLOW_USER, UPDATE_BIO, UPLOAD_PICTURE } from "../actions/userActions";
+import { DELETE_USER, FOLLOW_USER, GET_USER, UNFOLLOW_USER, UPDATE_BIO, UPLOAD_PICTURE } from "../actions/userActions";
 
 const initialState = {};
 
@@ -25,7 +25,10 @@ export default function userReducer(state = initialState, action) {
             return {
                 ...state,
                 followings: state.followings.filter((uuid) => action.payload !== uuid.followingUuid)
-            }  
+            }
+        case DELETE_USER:
+            return {
+                ...state.filter((user) => user.uuid !== action.payload.userUuid)}
         default:
             return state;
     }
