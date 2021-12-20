@@ -3,7 +3,7 @@ import { DELETE_USER, FOLLOW_USER, GET_USER, UNFOLLOW_USER, UPDATE_BIO, UPLOAD_P
 const initialState = {};
 
 export default function userReducer(state = initialState, action) {
-    console.log(action);
+    //console.log(action);
     switch (action.type) {
         case GET_USER:
             return action.payload
