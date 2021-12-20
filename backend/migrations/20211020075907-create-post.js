@@ -12,6 +12,9 @@ module.exports = {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
             },
+            posterUuid: {
+                type: DataTypes.STRING,
+            },
             message: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -20,9 +23,6 @@ module.exports = {
                 type: DataTypes.STRING
             },
             video: {
-                type: DataTypes.STRING
-            },
-            likers: {
                 type: DataTypes.STRING
             },
             userId: {

@@ -1,4 +1,4 @@
-const { User, Post } = require('../models');
+const { User, Post, Comment, Likers, Like } = require('../models');
 const fs = require("fs");
 const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
@@ -21,7 +21,7 @@ exports.createPost = async(req, res) => {
             return res.status(201).json({ errors });
         }
 
-        fileName = req.body.userUuid + Date.now() + '.jpg';
+        fileName = req.body.posterUuid + Date.now() + '.jpg';
 
         await pipeline(
             req.file.stream,
@@ -31,13 +31,13 @@ exports.createPost = async(req, res) => {
         );
     }
 
-    const { userUuid, message, video } = req.body
+    const { posterUuid, message, video } = req.body
     try {
         const user = await User.findOne({
-            where: { uuid: userUuid }
+            where: { uuid: posterUuid }
         })
         const post = await Post.create({
-            userUuid,
+            posterUuid,
             message,
             picture: req.file !== null ? "./uploads/posts/" + fileName : "",
             video,
@@ -54,7 +54,14 @@ exports.createPost = async(req, res) => {
 
 exports.getAllPosts = async(req, res) => {
     try {
-        const posts = await Post.findAll({ include: [{ model: User, as: 'user' }] })
+        const posts = await Post.findAll({
+            include: [
+                { model: User, as: 'user' },
+                { model: Comment, as: 'comments' },
+                { model: Likers, as: 'likers' }
+            ]
+        })
+
         return res.json(posts)
     } catch (err) {
         console.log(err)
@@ -89,7 +96,7 @@ exports.modifyPost = async(req, res) => {
 
         await post.save()
 
-        return res.json(post)
+        return res.json({ message: 'Post modified !' })
     } catch (err) {
         console.log(err)
         return res.status(500).json(post)
@@ -109,3 +116,53 @@ exports.deletePost = async(req, res) => {
         return res.status(500).json({ message: 'Something went wrong !' })
     }
 };
+
+exports.likePost = async(req, res) => {
+    const postUuid = req.params.uuid
+    const { posterUuid } = req.body
+
+    try {
+        const postLiked = await Post.findOne({
+            where: { uuid: postUuid }
+        })
+
+        const postId = postLiked.id
+
+        // add to likers
+        await Likers.create({ posterUuid, postId })
+
+        const likedPost = await User.findOne({
+            where: { uuid: posterUuid }
+        })
+
+        const userId = likedPost.id
+
+        // add to like
+        await Like.create({ postUuid, userId })
+
+        return res.status(200).send({ message: "Like registered !" })
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+exports.unlikePost = async(req, res) => {
+    const postUuid = req.params.uuid
+    const { posterUuid } = req.body
+
+    try {
+        const postLikers = await Likers.findOne({
+            where: { posterUuid: posterUuid }
+        })
+        await postLikers.destroy()
+
+        const postLike = await Like.findOne({
+            where: { postUuid: postUuid }
+        })
+        await postLike.destroy()
+
+        return res.status(200).send({ message: "Like has been removed !" })
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

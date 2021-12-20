@@ -9,12 +9,13 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ Post, Comment, Followers, Following }) {
+        static associate({ Post, Comment, Followers, Following, Like }) {
             // define association here
-            this.hasMany(Post, { foreignKey: 'userId', as: 'posts' })
-            this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' })
-            this.hasMany(Followers, { foreignKey: 'userIdFollowers', as: 'followers' })
-            this.hasMany(Following, { foreignKey: 'userIdFollowing', as: 'followings' })
+            this.hasMany(Like, { foreignKey: 'userId', as: 'likes' });
+            this.hasMany(Post, { foreignKey: 'userId', as: 'posts' });
+            this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' });
+            this.hasMany(Followers, { foreignKey: 'userIdFollowers', as: 'followers' });
+            this.hasMany(Following, { foreignKey: 'userIdFollowing', as: 'followings' });
         }
 
         // fonction qui permet de cacher l'id en retour au user

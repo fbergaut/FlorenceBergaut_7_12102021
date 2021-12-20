@@ -1,4 +1,4 @@
-const { User, Post, Followers, Following } = require('../models');
+const { User, Post, Comment, Followers, Following } = require('../models');
 
 exports.createUser = async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -16,6 +16,7 @@ exports.getAllUsers = async(req, res) => {
         const users = await User.findAll({
             include: [
                 { model: Post, as: 'posts' },
+                { model: Comment, as: 'comments' },
                 { model: Followers, as: 'followers' },
                 { model: Following, as: 'followings' }
             ]
@@ -70,11 +71,12 @@ exports.modifyUser = async(req, res) => {
 };
 
 exports.deleteUser = async(req, res) => {
-    const uuid = req.params.uuid
+    const userUuid = req.params.uuid
     try {
         const user = await User.findOne({
-            where: { uuid }
+            where: { uuid: userUuid }
         })
+
         await user.destroy()
         return res.json({ message: 'User deleted !' })
     } catch (err) {
@@ -84,7 +86,7 @@ exports.deleteUser = async(req, res) => {
 };
 
 exports.follow = async(req, res) => {
-    // const userUuid1 = req.params.uuid
+    // console.log(req.body);
     const followersUuid = userUuid1 = req.params.uuid
     const { followingUuid, userUuid0 } = req.body
 
@@ -114,8 +116,7 @@ exports.follow = async(req, res) => {
 };
 
 exports.unfollow = async(req, res) => {
-    const userUuid1 = req.params.uuid
-    const followersUuid = req.params.uuid
+    const followersUuid = userUuid1 = req.params.uuid
     const { followingUuid, userUuid0 } = req.body
 
     try {
