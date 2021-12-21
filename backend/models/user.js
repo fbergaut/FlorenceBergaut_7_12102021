@@ -9,10 +9,13 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ Post, Comment }) {
+        static associate({ Post, Comment, Followers, Following, Like }) {
             // define association here
-            this.hasMany(Post, { foreignKey: 'userId', as: 'posts' })
-            this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' })
+            this.hasMany(Like, { foreignKey: 'userId', as: 'likes' });
+            this.hasMany(Post, { foreignKey: 'userId', as: 'posts' });
+            this.hasMany(Comment, { foreignKey: 'userId', as: 'comments' });
+            this.hasMany(Followers, { foreignKey: 'userIdFollowers', as: 'followers' });
+            this.hasMany(Following, { foreignKey: 'userIdFollowing', as: 'followings' });
         }
 
         // fonction qui permet de cacher l'id en retour au user
@@ -29,33 +32,33 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a firstname' },
-                notEmpty: { msg: 'Firstame must not be empty' }
+                notNull: { msg: 'Veuillez renseigner votre prénom' },
+                notEmpty: { msg: 'Veuillez renseigner votre prénom' }
             }
         },
         lastname: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a lastname' },
-                notEmpty: { msg: 'Lastname must not be empty' }
+                notNull: { msg: 'Veuillez renseigner votre nom de famille' },
+                notEmpty: { msg: 'Veuillez renseigner votre nom de famille' }
             }
         },
         username: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a username' },
-                notEmpty: { msg: 'Username must not be empty' }
+                notNull: { msg: 'Veuillez choisir un pseudo' },
+                notEmpty: { msg: 'Veuillez choisir un pseudo' }
             }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isEmail: { msg: 'Must be a valid email adress' },
-                notNull: { msg: 'User must have a email' },
-                notEmpty: { msg: 'Email must not be empty' },
+                isEmail: { msg: 'Email incorrect' },
+                notNull: { msg: 'Veuillez renseigner votre email' },
+                notEmpty: { msg: 'Veuillez renseigner votre email' },
             },
             unique: true
         },
@@ -63,8 +66,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notNull: { msg: 'User must have a password' },
-                notEmpty: { msg: 'Password must not be empty' }
+                notNull: { msg: 'Veuillez renseigner votre mot de passe' },
+                notEmpty: { msg: 'Veuillez renseigner votre mot de passe' }
             }
         },
         picture: {
@@ -73,15 +76,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         bio: {
             type: DataTypes.STRING(800),
-        },
-        followers: {
-            type: DataTypes.STRING,
-        },
-        following: {
-            type: DataTypes.STRING,
-        },
-        likes: {
-            type: DataTypes.STRING
         }
     }, {
         hooks: {
@@ -91,21 +85,26 @@ module.exports = (sequelize, DataTypes) => {
                     user.password = bcrypt.hashSync(user.password, salt);
                 }
             },
-            beforeUpdate: async(user) => {
-                if (user.password) {
-                    const salt = await bcrypt.genSaltSync(10, 'a');
-                    user.password = bcrypt.hashSync(user.password, salt);
-                }
-            }
+            // beforeUpdate: async(user) => {
+            //     if (user.password) {
+            //         const salt = await bcrypt.genSaltSync(10, 'a');
+            //         user.password = bcrypt.hashSync(user.password, salt);
+            //     }
+            // }
         },
-        instanceMethods: {
-            validPassword: (password) => {
-                return bcrypt.compareSync(password, this.password);
-            }
-        },
+        // validate: {
+        //     userExist(req, res){
+        //         if (this.email === req.body.email) {
+        //             throw new Error("Cet utilisateur existe déjà !")
+        //         } else {
+        //             console.log("Veuillez vous inscrire !");
+        //         }
+        //     }
+        // },
         sequelize,
         tableName: 'users',
         modelName: 'User',
     });
+
     return User;
 };

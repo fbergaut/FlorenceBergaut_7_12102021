@@ -25,6 +25,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4
         },
+        commenterUuid: {
+            type: DataTypes.STRING,
+        },
+        commenterUsername: {
+            type: DataTypes.STRING,
+        },
+        postUuid: {
+            type: DataTypes.STRING,
+        },
         text: {
             type: DataTypes.STRING,
             allowNull: false

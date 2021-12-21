@@ -1,4 +1,4 @@
-const { User, Post } = require('../models')
+const { User, Post, Comment, Followers, Following } = require('../models');
 
 exports.createUser = async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -13,7 +13,14 @@ exports.createUser = async(req, res) => {
 
 exports.getAllUsers = async(req, res) => {
     try {
-        const users = await User.findAll()
+        const users = await User.findAll({
+            include: [
+                { model: Post, as: 'posts' },
+                { model: Comment, as: 'comments' },
+                { model: Followers, as: 'followers' },
+                { model: Following, as: 'followings' }
+            ]
+        })
         return res.json(users)
     } catch (err) {
         console.log(err)
@@ -26,7 +33,11 @@ exports.getOneUser = async(req, res) => {
     try {
         const user = await User.findOne({
             where: { uuid },
-            include: [{ model: Post, as: 'posts' }]
+            include: [
+                { model: Post, as: 'posts' },
+                { model: Followers, as: 'followers' },
+                { model: Following, as: 'followings' }
+            ]
         })
         return res.json(user)
     } catch (err) {
@@ -37,37 +48,95 @@ exports.getOneUser = async(req, res) => {
 
 exports.modifyUser = async(req, res) => {
     const uuid = req.params.uuid
-    const { firstname, lastname, username, email, password } = req.body
+    const { bio } = req.body
     try {
         const user = await User.findOne({
-            where: { uuid }
+            where: { uuid },
+            include: [
+                { model: Post, as: 'posts' },
+                { model: Followers, as: 'followers' },
+                { model: Following, as: 'followings' }
+            ]
         })
 
-        user.firstname = firstname
-        user.lastname = lastname
-        user.username = username
-        user.email = email
-        user.password = password
+        user.bio = bio
 
         await user.save()
 
         return res.json(user)
     } catch (err) {
         console.log(err)
-        return res.status(500).json(user)
+        return res.status(500).json(err)
     }
 };
 
 exports.deleteUser = async(req, res) => {
-    const uuid = req.params.uuid
+    const userUuid = req.params.uuid
     try {
         const user = await User.findOne({
-            where: { uuid }
+            where: { uuid: userUuid }
         })
+
         await user.destroy()
         return res.json({ message: 'User deleted !' })
     } catch (err) {
         console.log(err)
         return res.status(500).json({ message: 'Something went wrong !' })
+    }
+};
+
+exports.follow = async(req, res) => {
+    // console.log(req.body);
+    const followersUuid = userUuid1 = req.params.uuid
+    const { followingUuid, userUuid0 } = req.body
+
+    try {
+        const userFollowing = await User.findOne({
+            where: { uuid: userUuid1 }
+        })
+
+        const userIdFollowing = userFollowing.id
+
+        // add to the following list
+        await Following.create({ followingUuid, userUuid1, userIdFollowing })
+
+        const userFollowers = await User.findOne({
+            where: { uuid: userUuid0 }
+        })
+
+        const userIdFollowers = userFollowers.id
+
+        // add to the followers list
+        await Followers.create({ followersUuid, userUuid0, userIdFollowers });
+
+        return res.status(200).send({ message: "Adds to following and followers list succeeded !" })
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
+exports.unfollow = async(req, res) => {
+    const followersUuid = userUuid1 = req.params.uuid
+    const { followingUuid, userUuid0 } = req.body
+
+    try {
+        const userFollowing = await Following.findOne({
+            where: { userUuid1 }
+        })
+        await userFollowing.destroy({
+            where: { followingUuid }
+        })
+
+
+        const userFollowers = await Followers.findOne({
+            where: { userUuid0 }
+        })
+        await userFollowers.destroy({
+            where: { followersUuid }
+        })
+
+        return res.status(200).send({ message: "Record removed from following and followers list !" })
+    } catch (err) {
+        return res.status(500).json(err);
     }
 };

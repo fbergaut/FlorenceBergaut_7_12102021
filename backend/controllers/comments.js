@@ -1,15 +1,15 @@
 const { User, Post, Comment } = require('../models')
 
 exports.createComment = async(req, res) => {
-    const { userUuid, postUuid, text } = req.body
+    const { commenterUuid, postUuid, text } = req.body
     try {
         const user = await User.findOne({
-            where: { uuid: userUuid }
+            where: { uuid: commenterUuid }
         })
         const post = await Post.findOne({
             where: { uuid: postUuid }
         })
-        const comment = await Comment.create({ text, userId: user.id, postId: post.id })
+        const comment = await Comment.create({ commenterUuid, commenterUsername: user.username, postUuid, text, userId: user.id, postId: post.id })
         return res.json(comment)
     } catch (err) {
         console.log(err)
@@ -22,7 +22,10 @@ exports.createComment = async(req, res) => {
 exports.getAllComments = async(req, res) => {
     try {
         const comments = await Comment.findAll({
-            include: [{ model: User, as: 'user' }, { model: Post, as: 'post' }]
+            include: [
+                { model: User, as: 'user' },
+                { model: Post, as: 'post' }
+            ]
         })
         return res.json(comments)
     } catch (err) {
@@ -47,9 +50,15 @@ exports.getOneComment = async(req, res) => {
     }
 };
 exports.modifyComment = async(req, res) => {
-    const uuid = req.params.uuid
-    const { text } = req.body
+    const postUuid = req.params.uuid
+    const { uuid, text } = req.body
     try {
+        await Post.findOne({
+            where: {
+                uuid: postUuid
+            }
+        })
+
         const comment = await Comment.findOne({
             where: { uuid }
         })
@@ -66,8 +75,16 @@ exports.modifyComment = async(req, res) => {
 };
 
 exports.deleteComment = async(req, res) => {
-    const uuid = req.params.uuid
+    const postUuid = req.params.uuid
+    const { uuid } = req.body
+
     try {
+        await Post.findOne({
+            where: {
+                uuid: postUuid
+            }
+        })
+
         const comment = await Comment.findOne({
             where: { uuid }
         })
