@@ -12,14 +12,16 @@ const LikeButton = ({ post }) => {
     const dispatch = useDispatch();
 
     const like = () => {
-        console.log(uid);
         dispatch(likePost(post.uuid, uid))
         setLiked(true)
+        post.likers.push(uid);
+        console.log(post);
     };
 
     const unlike = () => {
         dispatch(unlikePost(post.uuid, uid))
         setLiked(false)
+        post.likers.pop(uid);
     };
     
 
@@ -30,11 +32,12 @@ const LikeButton = ({ post }) => {
                 const idLikers = id.posterUuid;
                 return idLikers;
             });
-            if(uuid.includes(uid)) {
-                setLiked(true)}
-            else setLiked(false);
+            //console.log(uuid);
+            if (uuid.includes(uid)) {
+                setLiked(true)
+            } else setLiked(false);
         }
-    }, [uid, post.likers, liked])
+    }, [uid, post, liked])
 
     return (
         <div className="like-container">
@@ -50,7 +53,7 @@ const LikeButton = ({ post }) => {
             {uid && liked === false && (
                 <img src="./img/icons/heart.svg" onClick={like} alt='like' />
             )}
-            {uid && liked  && (
+            {uid && liked === true && (
                 <img src="./img/icons/heart-filled.svg" onClick={unlike} alt='unlike' />
             )}
             <span>{post.likers.length}</span>
