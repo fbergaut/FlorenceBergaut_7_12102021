@@ -13,21 +13,18 @@ const LikeButton = ({ post }) => {
 
     const like = () => {
         dispatch(likePost(post.uuid, uid))
-        setLiked(true)
-        //post.likers.push(uid);
-        //console.log(post);
+        setLiked(true);
     };
 
     const unlike = () => {
         dispatch(unlikePost(post.uuid, uid))
-        setLiked(false)
-        //post.likers.pop(uid);
+        setLiked(false);
     };
     
 
     useEffect(() =>{
         //console.log(uid);
-        if (!isEmpty(post.likers)) {
+        if (!isEmpty(post.likers) && isEmpty(post.likers)) {
             const uuid = post.likers.map((id)=>{
                 const idLikers = id.posterUuid;
                 return idLikers;
@@ -53,7 +50,7 @@ const LikeButton = ({ post }) => {
             {uid && liked === false && (
                 <img src="./img/icons/heart.svg" onClick={like} alt='like' />
             )}
-            {uid && liked !== false && (
+            {uid && liked === true && (
                 <img src="./img/icons/heart-filled.svg" onClick={unlike} alt='unlike' />
             )}
             <span>{post.likers.length}</span>

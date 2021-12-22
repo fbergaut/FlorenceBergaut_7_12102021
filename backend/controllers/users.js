@@ -1,4 +1,4 @@
-const { User, Post, Comment, Followers, Following } = require('../models');
+const { User, Post, Comment, Followers, Following, Like } = require('../models');
 
 exports.createUser = async(req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -18,7 +18,8 @@ exports.getAllUsers = async(req, res) => {
                 { model: Post, as: 'posts' },
                 { model: Comment, as: 'comments' },
                 { model: Followers, as: 'followers' },
-                { model: Following, as: 'followings' }
+                { model: Following, as: 'followings' },
+                { model: Like, as: 'likes' }
             ]
         })
         return res.json(users)
@@ -35,8 +36,10 @@ exports.getOneUser = async(req, res) => {
             where: { uuid },
             include: [
                 { model: Post, as: 'posts' },
+                { model: Comment, as: 'comments' },
                 { model: Followers, as: 'followers' },
-                { model: Following, as: 'followings' }
+                { model: Following, as: 'followings' },
+                { model: Like, as: 'likes' }
             ]
         })
         return res.json(user)
@@ -54,8 +57,10 @@ exports.modifyUser = async(req, res) => {
             where: { uuid },
             include: [
                 { model: Post, as: 'posts' },
+                { model: Comment, as: 'comments' },
                 { model: Followers, as: 'followers' },
-                { model: Following, as: 'followings' }
+                { model: Following, as: 'followings' },
+                { model: Like, as: 'likes' }
             ]
         })
 
