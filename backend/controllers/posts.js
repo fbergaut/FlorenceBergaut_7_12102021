@@ -76,7 +76,11 @@ exports.getOnePost = async(req, res) => {
     try {
         const post = await Post.findOne({
             where: { uuid },
-            include: [{ model: User, as: 'user' }]
+            include: [
+                { model: User, as: 'user' },
+                { model: Comment, as: 'comments' },
+                { model: Likers, as: 'likers' }
+            ]
         })
         return res.json(post)
     } catch (err) {
@@ -122,22 +126,22 @@ exports.likePost = async(req, res) => {
     const { posterUuid } = req.body
 
     try {
+        // add to likers
         const postLiked = await Post.findOne({
             where: { uuid: postUuid }
         })
 
         const postId = postLiked.id
 
-        // add to likers
         await Likers.create({ posterUuid, postId })
 
+        // add to like
         const likedPost = await User.findOne({
             where: { uuid: posterUuid }
         })
 
         const userId = likedPost.id
 
-        // add to like
         await Like.create({ postUuid, userId })
 
         return res.status(200).send({ message: "Like registered !" })
@@ -151,13 +155,24 @@ exports.unlikePost = async(req, res) => {
     const { posterUuid } = req.body
 
     try {
+        // delete from likers
         const postLikers = await Likers.findOne({
             where: { posterUuid: posterUuid }
         })
         await postLikers.destroy()
 
+        // delete from likes
+        const likedPost = await User.findOne({
+            where: { uuid: posterUuid }
+        })
+
+        const userId = likedPost.id
+
         const postLike = await Like.findOne({
-            where: { postUuid: postUuid }
+            where: {
+                postUuid: postUuid,
+                userId: userId
+            }
         })
         await postLike.destroy()
 

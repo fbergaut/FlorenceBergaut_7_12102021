@@ -12,7 +12,7 @@ export default function postReducer(state = initialState, action)
                 if (post.uuid === action.payload.postUuid) {
                     return {
                         ...post,
-                        likers: [...post.likers, {posterUuid: action.payload.posterUuid}, ...post.likers]
+                        likers: [{posterUuid: action.payload.posterUuid}, ...post.likers]
                     }
                 }
                 return post;

@@ -14,14 +14,14 @@ const LikeButton = ({ post }) => {
     const like = () => {
         dispatch(likePost(post.uuid, uid))
         setLiked(true)
-        post.likers.push(uid);
-        console.log(post);
+        //post.likers.push(uid);
+        //console.log(post);
     };
 
     const unlike = () => {
         dispatch(unlikePost(post.uuid, uid))
         setLiked(false)
-        post.likers.pop(uid);
+        //post.likers.pop(uid);
     };
     
 
@@ -53,7 +53,7 @@ const LikeButton = ({ post }) => {
             {uid && liked === false && (
                 <img src="./img/icons/heart.svg" onClick={like} alt='like' />
             )}
-            {uid && liked === true && (
+            {uid && liked !== false && (
                 <img src="./img/icons/heart-filled.svg" onClick={unlike} alt='unlike' />
             )}
             <span>{post.likers.length}</span>
