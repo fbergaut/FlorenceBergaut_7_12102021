@@ -24,12 +24,12 @@ const LikeButton = ({ post }) => {
 
     useEffect(() =>{
         //console.log(uid);
-        if (!isEmpty(post.likers) && isEmpty(post.likers)) {
+        if (!isEmpty(post.likers) || isEmpty(post.likers)) {
             const uuid = post.likers.map((id)=>{
                 const idLikers = id.posterUuid;
                 return idLikers;
             });
-            //console.log(uuid);
+            console.log(uuid);
             if (uuid.includes(uid)) {
                 setLiked(true)
             } else setLiked(false);
