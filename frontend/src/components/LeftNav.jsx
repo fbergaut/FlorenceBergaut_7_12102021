@@ -3,19 +3,21 @@ import { NavLink } from "react-router-dom";
 
 const LeftNav = () => {
     return (
-        <div className="left-nav-container">
+        <li className="left-nav-container">
             <div className="icons">
-<div className="icons-bis">
-    <NavLink to='/' exact activeClassName="active-left-nav">
-        <img src="./img/icons/home.svg" alt="home" />
-    </NavLink>
-    <br/>
-    <NavLink to='/profil' exact activeClassName="active-left-nav">
-        <img src="./img/icons/user.svg" alt="user" />
-    </NavLink>
-</div>
+                <div className="icons-bis">
+                    <NavLink to='/' exact activeClassName="active-left-nav">
+                        <i class="fas fa-home"></i>
+                        {/* <img src="./img/icons/home.svg" alt="home" /> */}
+                    </NavLink>
+                    <br/>
+                    <NavLink to='/profil' exact activeClassName="active-left-nav">
+                        <i class="fas fa-user-circle"></i>
+                        {/* <img src="./img/icons/user.svg" alt="user" /> */}
+                    </NavLink>
+                </div>
             </div>
-        </div>
+        </li>
     )
 
 };

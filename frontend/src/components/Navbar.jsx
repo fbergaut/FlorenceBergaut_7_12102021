@@ -37,7 +37,7 @@ const Navbar = () => {
                         <li></li>
                         <li>
                             <NavLink exact to="/profil">
-                                <img src="./img/icons/login.svg" alt="login" />
+                                <i className="fas fa-sign-in-alt"></i>
                             </NavLink>
                         </li>
                     </ul> 
