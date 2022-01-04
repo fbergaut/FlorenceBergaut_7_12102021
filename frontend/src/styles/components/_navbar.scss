@@ -1,9 +1,11 @@
 nav {
     position: fixed;
     width: 100%;
-    height: 45px;
+    height: 60px;
     border-radius: 6px;
-    box-shadow: 18px 1px 0px $color-1, 22px 4px 0px 0px $shadow;
+    //background: $color-1;
+    //box-shadow: 18px 1px 0px $color-1, 22px 4px 0px 0px $shadow;
+    box-shadow: $shadow;
     z-index: 10;
     top: 0;
     @media screen and(max-width: 1251px) {
@@ -11,13 +13,13 @@ nav {
     }
     &::after {
         content: "";
-        height: 45px;
+        height: 60px;
         width: 110%;
         left: -20px;
         top: 0;
         position: absolute;
         backdrop-filter: blur(3px);
-        background: rgba(255, 255, 255, 0.86);
+        background: rgba(253, 253, 253, 0.86);
         z-index: -8;
     }
     .nav-container {
@@ -26,7 +28,7 @@ nav {
         max-width: 1190px;
         margin: 0 auto;
         justify-content: space-between;
-        height: 45px;
+        height: 60px;
         align-items: center;
         .logo {
             display: flex;

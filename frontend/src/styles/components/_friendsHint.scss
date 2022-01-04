@@ -1,11 +1,12 @@
 .get-friends-container {
     width: 356px;
-    background: linear-gradient(145deg, $color-2 30%, #ffe1d9 100%);
+    //background: linear-gradient(145deg, $color-2 30%, #e7eef6 100%);
+    background: $white;
     border-radius: 20px;
     padding: 20px 20px 10px;
     h4 {
         font-size: 1.4rem;
-        color: $color-3;
+        color: $black;
     }
     .icon {
         margin: 16px auto;
@@ -39,15 +40,16 @@
             span {
                 text-align: right;
                 button {
-                    background: $color-1;
-                    color: $color-4;
+                    background: $color-2;
+                    //background: $color-1;
+                    color: $white;
                     padding: 10px 24px 8px;
                     transition: 0.2s;
                     border-radius: 20px;
                     font-size: 0.9rem;
                     &:hover {
-                        background: $color-4;
-                        color: $color-1;
+                        background: linear-gradient(145deg, $color-1 30%, $color-3 110%);
+                        color: $white;
                     }
                 }
             }

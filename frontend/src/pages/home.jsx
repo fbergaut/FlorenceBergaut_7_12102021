@@ -12,7 +12,6 @@ const Home = () => {
 
     return (
         <div className="home">
-            <LeftNav />
             <div className="main">
                 <div className="home-header">
                 {uid ? <NewPostForm /> : <Log signin={true} signup={false} /> }
