@@ -41,7 +41,7 @@ const SocialShare = ({ post }) =>{
                 >
                 <div className="social-share">
                     <FacebookShareButton 
-                        url="https://www.lightology.com/" 
+                        url={String(window.location)} 
                         quote={post.message}>
                         <FacebookIcon size={27} round={true}></FacebookIcon>
                     </FacebookShareButton>
