@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateBio } from "../../actions/userActions";
-import LeftNav from "../LeftNav";
 import { dateParser } from "../Utils";
 import DeleteProfil from "./DeleteProfil";
 import FollowHandler from "./FollowHandler";

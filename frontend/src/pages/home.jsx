@@ -1,7 +1,6 @@
 import React from "react";
 import { useContext } from "react";
 import { UidContext } from "../components/AppContext";
-import LeftNav from "../components/LeftNav"
 import NewPostForm from "../components/Post/NewPostForm";
 import Thread from "../components/Thread";
 import Log from "../components/Log"
