@@ -95,11 +95,9 @@ export const unfollowUser = (followersUuid, idToUnfollow) => {
 
 export const deleteUser= (userUuid) => {
     return (dispatch) => {
-        return axios({
-            method: "delete",
-            url: `${process.env.REACT_APP_API_URL}/users/${userUuid}`
-        })
-        .then((res) => {
+        return axios
+            .delete(`${process.env.REACT_APP_API_URL}/users/${userUuid}`)
+            .then((res) => {
                 dispatch({ type: DELETE_USER, payload: {userUuid}});
             })
             .catch((err) => console.log(err));

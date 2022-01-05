@@ -1,5 +1,5 @@
 .profil-page {
-    margin: 80px auto 0;
+    margin: 90px auto 0;
     max-width: 1200px;
     .icons {
         top: 55px;
@@ -114,7 +114,7 @@
             grid-template-columns: 1fr;
         }
         >div {
-            background: $color-4;
+            background: $white;
             border-radius: 20px;
             padding: 25px;
             margin: 20px 10px;
@@ -142,7 +142,7 @@
                     transform: translate(-50%, -50%);
                     width: 270px;
                     background: $color-3;
-                    color: $color-2;
+                    color: $white;
                     border-radius: 20px;
                     display: inline-block;
                     padding: 9px 0;
@@ -183,7 +183,7 @@
             p,
             textarea {
                 min-height: 80px;
-                border: 1px solid $color-1;
+                background: $background;
                 border-radius: 20px 20px 6px 20px;
                 padding: 10px 20px;
                 font-size: 1.1rem;
@@ -201,8 +201,8 @@
                 margin: 60px 0 10px;
             }
             h5 {
-                background: $color-1;
-                color: $color-4;
+                background: $color-2;
+                color: $white;
                 font-family: $font-1;
                 margin: 20px 0;
                 padding: 12px;
@@ -216,7 +216,7 @@
                 }
             }
             h6 {
-                background: black;
+                background: $black;
                 color: $color-4;
                 font-family: $font-1;
                 margin: 20px 0;
@@ -316,7 +316,8 @@
                             border-radius: 20px;
                             margin-right: 6px;
                             &:hover {
-                                color: $color-3;
+                                color: $white;
+                                background: $color-1;
                                 transform: translateX(2px);
                             }
                         }
