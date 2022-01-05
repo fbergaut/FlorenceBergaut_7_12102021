@@ -64,17 +64,8 @@ nav {
             }
             li {
                 margin-left: 20px;
-                img {
-                    height: 24px;
-                    width: 24px;
+                .fas.fa-sign-out-alt {
                     cursor: pointer;
-                    display: grid;
-                    align-items: center;
-                    justify-items: center;
-                    height: 100%;
-                }
-                &:hover .logout {
-                    background: $color-1;
                 }
             }
         }
