@@ -1,0 +1,10 @@
+.social-share {
+    display: flex;
+    height: 30px;
+    button {
+        margin-right: 5px;
+        &:hover {
+            background: none;
+        }
+    }
+}
