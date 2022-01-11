@@ -29,7 +29,6 @@ const LikeButton = ({ post }) => {
                 const idLikers = id.posterUuid;
                 return idLikers;
             });
-            console.log(uuid);
             if (uuid.includes(uid)) {
                 setLiked(true)
             } else setLiked(false);
