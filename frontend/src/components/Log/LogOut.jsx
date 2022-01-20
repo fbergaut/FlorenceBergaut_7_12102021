@@ -24,7 +24,7 @@ const LogOut = () => {
     };
 
     return (
-        <li onClick={logout}>
+        <li onClick={logout} aria-current="true">
            <i className="fas fa-sign-out-alt"></i>
             {/* <img className="logout" src="./img/icons/logout.svg" alt="logout" /> */}
         </li>

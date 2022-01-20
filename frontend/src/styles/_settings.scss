@@ -1,16 +1,19 @@
     @font-face {
         font-family: "font-1";
         src: url(./assets/fonts/JosefinSans-ExtraLight.ttf);
+        font-display: swap;
     }
     
     @font-face {
         font-family: "font-2";
         src: url(./assets/fonts/JosefinSans-Regular.ttf);
+        font-display: swap;
     }
     
     @font-face {
         font-family: "font-3";
         src: url(./assets/fonts/JosefinSans-Bold.ttf);
+        font-display: swap;
     }
     
     $font-1: "font-1",

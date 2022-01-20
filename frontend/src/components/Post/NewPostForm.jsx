@@ -129,6 +129,8 @@ const NewPostForm = () => {
                                         accept=".jpg, .jpeg, .png" 
                                         onChange={(e) => handlePicture(e)}
                                     />
+                                    <span>&nbsp;&nbsp;</span>
+                                    <label for="file-upload">Ajout image</label>
                                 </>
                             )}
                             {video && (
