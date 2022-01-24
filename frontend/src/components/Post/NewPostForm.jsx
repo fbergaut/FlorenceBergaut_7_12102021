@@ -130,7 +130,7 @@ const NewPostForm = () => {
                                         onChange={(e) => handlePicture(e)}
                                     />
                                     <span>&nbsp;&nbsp;</span>
-                                    <label for="file-upload">Ajout image</label>
+                                    <label htmlFor="file-upload">Ajout image</label>
                                 </>
                             )}
                             {video && (
